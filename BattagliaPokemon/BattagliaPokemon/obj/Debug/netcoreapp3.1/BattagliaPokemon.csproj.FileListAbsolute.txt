@@ -34,3 +34,6 @@ D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netco
 D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\BulbasaurRetro.xnb
 D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\CharmanderRetro.xnb
 D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\poliwhirlRetro.xnb
+D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Font.xnb
+D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\confButton.xnb
+D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\pg.xnb
