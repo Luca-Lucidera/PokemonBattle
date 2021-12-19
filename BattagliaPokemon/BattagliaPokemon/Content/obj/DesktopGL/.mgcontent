@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Front/BulbasaurFront.png</File>
+    <File>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Front/CharmanderFront.png</File>
+    <File>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Front/poliwhirlFront.png</File>
+    <File>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Retro/BulbasaurRetro.png</File>
+    <File>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Retro/CharmanderRetro.png</File>
+    <File>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Retro/poliwhirlRetro.png</File>
+  </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>
