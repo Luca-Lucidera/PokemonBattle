@@ -2,6 +2,18 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Net.Sockets;
+using System.IO;
+using System.Net;
+
 
 namespace BattagliaPokemon
 {
@@ -84,7 +96,35 @@ namespace BattagliaPokemon
                     if(!ipAvversario.Equals(""))
                     {
                         //inserire qui la logica per fare la connessione con l'altro peer
+                      
+                        void server(object o)
+                        {
+                            String hostname = "172.16.102.110";
 
+                            IPAddress addr;
+                            IPAddress.TryParse(hostname, out addr);
+                            TcpListener listener = new TcpListener(addr, 4269);
+                            listener.Start();
+                            TcpClient c = listener.AcceptTcpClient();
+
+                            StreamWriter sw = new StreamWriter(c.GetStream());
+                            sw.WriteLine("ciao");
+
+                            Thread.Sleep(1000);
+                            sw.Close();
+                            c.Close();
+                        }
+
+                        void client(object o)
+                        {
+                            Thread.Sleep(1000);
+                            TcpClient c = new TcpClient("localhost", 4269);
+
+                            StreamReader sr = new StreamReader(c.GetStream());
+                            String s = sr.ReadLine();
+                           
+
+                        }
                         //se il tipo accetta
                         gameLogic = "battle";
                         //se non accetta gameLogic = "ipSelection"
