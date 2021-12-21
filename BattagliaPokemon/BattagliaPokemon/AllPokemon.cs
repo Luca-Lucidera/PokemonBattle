@@ -43,15 +43,18 @@ namespace BattagliaPokemon
         {
             return pokemon;
         }
-        public Pokemon CheckPokemonPremuto(Vector2 posizione)
+        public Pokemon CheckPokemonPremuto(Vector2 posizionePresa)
         {
+            int lastX = 0;
             for (int i = 0; i < pokemon.Length; i++)
             {
-                if(posizione.X >= pokemon[i].posizione.X && posizione.X <= pokemon[i].posizione.X+ Xadder)
+                //                                         posizione inzia deve essere minore della sua posizione + la sua lunghezza + l'adder
+                if((posizionePresa.X >= pokemon[i].posizione.X + lastX )  && (posizionePresa.X <= pokemon[i].posizione.X + Xadder + lastX))
                 {
-                    if (posizione.Y >= pokemon[i].posizione.Y && posizione.Y <= pokemon[i].posizione.Y + Yadder)
+                    if (posizionePresa.Y >= pokemon[i].posizione.Y && posizionePresa.Y <= pokemon[i].posizione.Y + Yadder)
                         return pokemon[i];
                 }
+                lastX = Convert.ToInt32(pokemon[i].posizione.X) + 40;
             }
             return null;
         }

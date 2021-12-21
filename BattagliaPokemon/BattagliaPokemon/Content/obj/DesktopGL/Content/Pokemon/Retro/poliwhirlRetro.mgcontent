@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Retro/poliwhirlRetro.png</SourceFile>
-  <SourceTime>2021-12-19T10:58:47.9895793+01:00</SourceTime>
-  <DestFile>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/bin/DesktopGL/Content/Pokemon/Retro/poliwhirlRetro.xnb</DestFile>
-  <DestTime>2021-12-19T11:31:13.8220971+01:00</DestTime>
+  <SourceFile>C:/Users/lucid/Desktop/GIT REPOSITORY/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Retro/poliwhirlRetro.png</SourceFile>
+  <SourceTime>2021-12-19T15:06:25.3896642+01:00</SourceTime>
+  <DestFile>C:/Users/lucid/Desktop/GIT REPOSITORY/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/bin/DesktopGL/Content/Pokemon/Retro/poliwhirlRetro.xnb</DestFile>
+  <DestTime>2021-12-20T07:59:29.6259368+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2020-08-10T18:17:54+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
