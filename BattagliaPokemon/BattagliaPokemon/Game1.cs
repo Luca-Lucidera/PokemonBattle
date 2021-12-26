@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -21,7 +20,7 @@ namespace BattagliaPokemon
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        
+
         private SpriteFont generalFont;
         private Texture2D personaggio; // 96 x 104 px
         private Texture2D confirmButton; // 252 x 91 px
@@ -29,10 +28,16 @@ namespace BattagliaPokemon
         private AllPokemon ap;
         private PokemonScelti ps;
 
+
         private string nome;
-        private string gameLogic = "gameStart";
-        private string ipAvversario = ""; 
-        
+        private string gameLogic = "ipSelection";
+        private string ipAvversario = "";
+
+
+        TcpClient myPeer;
+        TcpClient secondPeer;
+        Thread receivingThread;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -44,6 +49,11 @@ namespace BattagliaPokemon
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            ThreadStart start = new ThreadStart(riceviDati);
+            receivingThread = new Thread(start);
+            receivingThread.IsBackground = true;
+            receivingThread.SetApartmentState(ApartmentState.STA);
+            receivingThread.Start();
 
             base.Initialize();
         }
@@ -70,6 +80,7 @@ namespace BattagliaPokemon
             // TODO: Add your update logic here
             var mouseState = Mouse.GetState();
             Vector2 mousePosition = new Vector2(mouseState.X, mouseState.Y);
+
             if (gameLogic.Equals("gameStart"))
             {
                 if (mouseState.LeftButton == ButtonState.Pressed)
@@ -77,7 +88,7 @@ namespace BattagliaPokemon
                         if ((mousePosition.X >= 325 && mousePosition.X <= 325 + 150) && (mousePosition.Y >= 410 && mousePosition.Y <= 410 + 25))
                             gameLogic = "sceltaPokemon";
             }
-            else if(gameLogic.Equals("sceltaPokemon"))
+            else if (gameLogic.Equals("sceltaPokemon"))
             {
                 if (mouseState.LeftButton == ButtonState.Pressed)
                 {
@@ -92,39 +103,18 @@ namespace BattagliaPokemon
             }
             else if (gameLogic.Equals("ipSelection"))
             {
-                if(mouseState.LeftButton == ButtonState.Pressed)
-                    if(!ipAvversario.Equals(""))
+                if (mouseState.LeftButton == ButtonState.Pressed)
+                    if (!ipAvversario.Equals(""))
                     {
-                        //inserire qui la logica per fare la connessione con l'altro peer
-                      
-                        void server(object o)
-                        {
-                            String hostname = "172.16.102.110";
-
-                            IPAddress addr;
-                            IPAddress.TryParse(hostname, out addr);
-                            TcpListener listener = new TcpListener(addr, 4269);
-                            listener.Start();
-                            TcpClient c = listener.AcceptTcpClient();
-
-                            StreamWriter sw = new StreamWriter(c.GetStream());
-                            sw.WriteLine("ciao");
-
-                            Thread.Sleep(1000);
-                            sw.Close();
-                            c.Close();
-                        }
-
-                        void client(object o)
-                        {
-                            Thread.Sleep(1000);
-                            TcpClient c = new TcpClient("localhost", 4269);
-
-                            StreamReader sr = new StreamReader(c.GetStream());
-                            String s = sr.ReadLine();
-                           
-
-                        }
+                        myPeer = new TcpClient();
+                        myPeer.Connect(ipAvversario, 4269);
+                        string daMandare = "non funziona";
+                        StreamWriter sw = new StreamWriter(myPeer.GetStream());
+                        StreamReader sr = new StreamReader(myPeer.GetStream());
+                        sw.WriteLine(daMandare);
+                        sw.Flush();
+                        string x = sr.ReadLine();
+                        Console.WriteLine(x);
                         //se il tipo accetta
                         gameLogic = "battle";
                         //se non accetta gameLogic = "ipSelection"
@@ -206,7 +196,20 @@ namespace BattagliaPokemon
                     ipAvversario += character;
                 }
             }
-            
+
+        }
+
+        //funzione eseguita dal thread per ricevere i dati dal 1° peer al 2° peer
+        private void riceviDati()
+        {
+            TcpListener listener = new TcpListener(IPAddress.Any, 4269);
+            listener.Start();
+            secondPeer = listener.AcceptTcpClient();
+            StreamWriter sw = new StreamWriter(secondPeer.GetStream());
+            StreamReader sr = new StreamReader(secondPeer.GetStream());
+            String strClientInput = sr.ReadLine();
+            sw.WriteLine(strClientInput);
+            sw.Flush();
         }
     }
 }
