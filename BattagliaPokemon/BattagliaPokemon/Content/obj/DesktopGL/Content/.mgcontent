@@ -4,16 +4,16 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/simon/OneDrive/Documenti/GitHub/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/confButton.jpg</File>
-    <File>C:/Users/simon/OneDrive/Documenti/GitHub/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Font.spritefont</File>
-    <File>C:/Users/simon/OneDrive/Documenti/GitHub/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/ipselect.png</File>
-    <File>C:/Users/simon/OneDrive/Documenti/GitHub/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Front/BulbasaurFront.png</File>
-    <File>C:/Users/simon/OneDrive/Documenti/GitHub/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Front/CharmanderFront.png</File>
-    <File>C:/Users/simon/OneDrive/Documenti/GitHub/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Front/poliwhirlFront.png</File>
-    <File>C:/Users/simon/OneDrive/Documenti/GitHub/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Retro/BulbasaurRetro.png</File>
-    <File>C:/Users/simon/OneDrive/Documenti/GitHub/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Retro/CharmanderRetro.png</File>
-    <File>C:/Users/simon/OneDrive/Documenti/GitHub/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Retro/poliwhirlRetro.png</File>
-    <File>C:/Users/simon/OneDrive/Documenti/GitHub/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/sceltaNomeD1.png</File>
+    <File>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/confButton.jpg</File>
+    <File>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Font.spritefont</File>
+    <File>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/ipselect.png</File>
+    <File>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Front/BulbasaurFront.png</File>
+    <File>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Front/CharmanderFront.png</File>
+    <File>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Front/poliwhirlFront.png</File>
+    <File>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Retro/BulbasaurRetro.png</File>
+    <File>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Retro/CharmanderRetro.png</File>
+    <File>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Retro/poliwhirlRetro.png</File>
+    <File>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/sceltaNomeD1.png</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />

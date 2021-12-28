@@ -78,3 +78,5 @@ C:\Users\lucid\Desktop\GIT REPOSITORY\PokemonBattle\BattagliaPokemon\BattagliaPo
 C:\Users\lucid\Desktop\GIT REPOSITORY\PokemonBattle\BattagliaPokemon\BattagliaPokemon\obj\Debug\netcoreapp3.1\BattagliaPokemon.genruntimeconfig.cache
 C:\Users\lucid\Desktop\GIT REPOSITORY\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\ipselect.xnb
 C:\Users\lucid\Desktop\GIT REPOSITORY\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\sceltaNomeD1.xnb
+D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\ipselect.xnb
+D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\sceltaNomeD1.xnb

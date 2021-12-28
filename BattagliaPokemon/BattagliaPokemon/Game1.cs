@@ -30,7 +30,7 @@ namespace BattagliaPokemon
 
 
         private string nome;
-        private string gameLogic = "ipSelection";
+        private string gameLogic = "sceltaPokemon";
         private string ipAvversario = "";
 
 
@@ -108,6 +108,7 @@ namespace BattagliaPokemon
                     {
                         myPeer = new TcpClient();
                         myPeer.Connect(ipAvversario, 4269);
+                        //da mandare il primo pokemon scelto (peer 1)
                         string daMandare = "non funziona";
                         StreamWriter sw = new StreamWriter(myPeer.GetStream());
                         StreamReader sr = new StreamReader(myPeer.GetStream());
@@ -207,6 +208,7 @@ namespace BattagliaPokemon
             secondPeer = listener.AcceptTcpClient();
             StreamWriter sw = new StreamWriter(secondPeer.GetStream());
             StreamReader sr = new StreamReader(secondPeer.GetStream());
+            //deve ritornare il primo pokemon scelto (peer 2)
             String strClientInput = sr.ReadLine();
             sw.WriteLine(strClientInput);
             sw.Flush();

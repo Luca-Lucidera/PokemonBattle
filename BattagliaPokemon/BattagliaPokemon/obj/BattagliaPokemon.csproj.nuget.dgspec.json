@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\simon\\OneDrive\\Documenti\\GitHub\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon.csproj": {}
+    "D:\\Scuola\\GITHUB\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon.csproj": {}
   },
   "projects": {
-    "C:\\Users\\simon\\OneDrive\\Documenti\\GitHub\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon.csproj": {
+    "D:\\Scuola\\GITHUB\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\simon\\OneDrive\\Documenti\\GitHub\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon.csproj",
+        "projectUniqueName": "D:\\Scuola\\GITHUB\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon.csproj",
         "projectName": "BattagliaPokemon",
-        "projectPath": "C:\\Users\\simon\\OneDrive\\Documenti\\GitHub\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon.csproj",
-        "packagesPath": "C:\\Users\\simon\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\simon\\OneDrive\\Documenti\\GitHub\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\obj\\",
+        "projectPath": "D:\\Scuola\\GITHUB\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon.csproj",
+        "packagesPath": "C:\\Users\\lucid\\.nuget\\packages\\",
+        "outputPath": "D:\\Scuola\\GITHUB\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\simon\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\lucid\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -68,7 +70,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
         }
       }
     }
