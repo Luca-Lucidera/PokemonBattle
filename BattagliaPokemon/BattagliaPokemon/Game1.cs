@@ -30,7 +30,7 @@ namespace BattagliaPokemon
 
 
         private string nome;
-        private string gameLogic = "sceltaPokemon";
+        private string gameLogic = "ipSelection";
         private string ipAvversario = "";
 
 
@@ -49,6 +49,7 @@ namespace BattagliaPokemon
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            myPeer = new TcpClient();
             ThreadStart start = new ThreadStart(riceviDati);
             receivingThread = new Thread(start);
             receivingThread.IsBackground = true;
@@ -106,10 +107,9 @@ namespace BattagliaPokemon
                 if (mouseState.LeftButton == ButtonState.Pressed)
                     if (!ipAvversario.Equals(""))
                     {
-                        myPeer = new TcpClient();
                         myPeer.Connect(ipAvversario, 4269);
                         //da mandare il primo pokemon scelto (peer 1)
-                        string daMandare = "non funziona";
+                        string daMandare = "m";
                         StreamWriter sw = new StreamWriter(myPeer.GetStream());
                         StreamReader sr = new StreamReader(myPeer.GetStream());
                         sw.WriteLine(daMandare);
@@ -119,11 +119,23 @@ namespace BattagliaPokemon
                         //se il tipo accetta
                         gameLogic = "battle";
                         //se non accetta gameLogic = "ipSelection"
+                        sr.Close();
+                        sw.Close();
+                        
                     }
             }
             else if (gameLogic.Equals("battle"))
             {
-
+                
+                    
+                    myPeer.Connect(ipAvversario, 4269);
+                    StreamWriter sw = new StreamWriter(myPeer.GetStream());
+                    StreamReader sr = new StreamReader(myPeer.GetStream());
+                    sw.WriteLine("a");
+                    sw.Flush();
+                    string s = sr.ReadLine();
+                    sr.Close();
+                
             }
             base.Update(gameTime);
         }
@@ -205,13 +217,31 @@ namespace BattagliaPokemon
         {
             TcpListener listener = new TcpListener(IPAddress.Any, 4269);
             listener.Start();
-            secondPeer = listener.AcceptTcpClient();
-            StreamWriter sw = new StreamWriter(secondPeer.GetStream());
-            StreamReader sr = new StreamReader(secondPeer.GetStream());
-            //deve ritornare il primo pokemon scelto (peer 2)
-            String strClientInput = sr.ReadLine();
-            sw.WriteLine(strClientInput);
-            sw.Flush();
+            while (true)
+            {
+                secondPeer = listener.AcceptTcpClient();
+            
+                StreamWriter sw = new StreamWriter(secondPeer.GetStream());
+                StreamReader sr = new StreamReader(secondPeer.GetStream());
+                //deve ritornare il primo pokemon scelto (peer 2)
+
+                String strClientInput = sr.ReadLine();
+                if (strClientInput == "m")
+                {
+                    gameLogic = "battle";
+                    string mioPokemon = "s;Charmander;200;elettro";
+                    sw.WriteLine(mioPokemon);
+                    sw.Flush();
+                }
+                else if (strClientInput == "a")
+                {
+                    string mioPokemon = "r;Charmander;150;1";
+                    sw.WriteLine(mioPokemon);
+                    sw.Flush();
+                }
+                sw.Close();
+                sr.Close();
+            }
         }
     }
 }
