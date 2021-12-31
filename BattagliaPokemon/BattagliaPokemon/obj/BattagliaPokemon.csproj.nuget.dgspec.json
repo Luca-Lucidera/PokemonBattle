@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lucid\\Desktop\\GIT REPOSITORY\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon.csproj": {}
+    "D:\\Scuola\\GITHUB\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lucid\\Desktop\\GIT REPOSITORY\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon.csproj": {
+    "D:\\Scuola\\GITHUB\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lucid\\Desktop\\GIT REPOSITORY\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon.csproj",
+        "projectUniqueName": "D:\\Scuola\\GITHUB\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon.csproj",
         "projectName": "BattagliaPokemon",
-        "projectPath": "C:\\Users\\lucid\\Desktop\\GIT REPOSITORY\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon.csproj",
+        "projectPath": "D:\\Scuola\\GITHUB\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon.csproj",
         "packagesPath": "C:\\Users\\lucid\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lucid\\Desktop\\GIT REPOSITORY\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\obj\\",
+        "outputPath": "D:\\Scuola\\GITHUB\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

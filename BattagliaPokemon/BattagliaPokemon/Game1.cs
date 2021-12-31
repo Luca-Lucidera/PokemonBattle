@@ -248,38 +248,44 @@ namespace BattagliaPokemon
         {
             TcpListener listener = new TcpListener(IPAddress.Any, 4269);
             listener.Start();
+            StreamWriter sw;
+            StreamReader sr;
+            secondPeer = listener.AcceptTcpClient();
             while (true)
             {
-                secondPeer = listener.AcceptTcpClient();
-            
-                StreamWriter sw = new StreamWriter(secondPeer.GetStream());
-                StreamReader sr = new StreamReader(secondPeer.GetStream());
+                sw = new StreamWriter(secondPeer.GetStream());
+                sr = new StreamReader(secondPeer.GetStream());
                 //deve ritornare il primo pokemon scelto (peer 2)
 
                 String strClientInput = sr.ReadLine();
-                if (strClientInput == "m") //peer 1 contatta peer 2 e il peer 2 gli manda il suo pokemon
+                if(strClientInput != null)
                 {
-                    gameLogic = "battle";
-                    string nomeAvversario = "da prendere dall'xml ricevuto";//da sostituire con l'xml
-                    pokemonSceltoPeer1 = ps.getPokemonByPos(0);//da sostituire con l'xml
-                    sw.WriteLine(pokemonSceltoPeer1);
-                    sw.Flush();
+                    if (strClientInput == "m") //peer 1 contatta peer 2 e il peer 2 gli manda il suo pokemon
+                    {
+                        gameLogic = "battle";
+                        string nomeAvversario = "da prendere dall'xml ricevuto";//da sostituire con l'xml
+                        pokemonSceltoPeer1 = ps.getPokemonByPos(0);//da sostituire con l'xml
+                        sw.WriteLine(pokemonSceltoPeer1);
+                        sw.Flush();
+                    }
+                    else if (strClientInput.StartsWith("s"))  //peer 1 riceve i pokemon del peer 2 e quindi il peer 1 invia il suo pokemon
+                    {
+                        pokemonSceltoPeer2 = strClientInput.Substring(2);//da sostituire con l'xml
+                        sw.WriteLine(pokemonSceltoPeer2);
+                        sw.Flush();
+                    }
+                    else if (strClientInput == "a")
+                    {
+                        string mioPokemon = "r;Charmander;150;1";
+                        sw.WriteLine(mioPokemon);
+                        sw.Flush();
+                    }
                 }
-                else if(strClientInput == "s")  //peer 1 riceve i pokemon del peer 2 e quindi il peer 1 invia il suo pokemon
-                {
-                    pokemonSceltoPeer2 = strClientInput.Substring(2);//da sostituire con l'xml
-                    sw.WriteLine(pokemonSceltoPeer2);
-                    sw.Flush();
-                }
-                else if (strClientInput == "a")
-                {
-                    string mioPokemon = "r;Charmander;150;1";
-                    sw.WriteLine(mioPokemon);
-                    sw.Flush();
-                }
-                sw.Close();
-                sr.Close();
+                
+                
             }
+            sw.Close();
+            sr.Close();
         }
     }
 }
