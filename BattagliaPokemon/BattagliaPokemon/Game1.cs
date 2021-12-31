@@ -31,7 +31,7 @@ namespace BattagliaPokemon
         private string ipAvversario = "";
 
         string pokemonSceltoPeer1;
-        string pokeomSceltoPeer2;
+        string pokemonSceltoPeer2;
 
         TcpClient myPeer;
         TcpClient secondPeer;
@@ -72,7 +72,7 @@ namespace BattagliaPokemon
             BattleTexture = Content.Load<Texture2D>("Desktop - Battaglia");
 
             pokemonSceltoPeer1 = "";
-            pokeomSceltoPeer2 = "";
+            pokemonSceltoPeer2 = "";
             nome = "";
             // TODO: use this.Content to load your game content here
         }
@@ -119,9 +119,15 @@ namespace BattagliaPokemon
                         StreamReader sr = new StreamReader(myPeer.GetStream());
                         sw.WriteLine(daMandare);
                         sw.Flush();
-                        pokeomSceltoPeer2 = sr.ReadLine();
+
+                        pokemonSceltoPeer2 = sr.ReadLine();
+                        
                         gameLogic = "battle";
                         //se non accetta gameLogic = "ipSelection"
+                        sw.WriteLine(String.Format("s;{0}", ps.getPokemonByPos(0)));
+                        sw.Flush();
+                        pokemonSceltoPeer1 = sr.ReadLine();
+                        
                         sr.Close();
                         sw.Close();
                         
@@ -130,13 +136,14 @@ namespace BattagliaPokemon
             else if (gameLogic.Equals("battle"))
             {
                 /*
+                
                 if (done == false)
                 {
                     myPeer = new TcpClient();
                     myPeer.Connect(ipAvversario, 4269);
                     StreamWriter sw = new StreamWriter(myPeer.GetStream());
                     StreamReader sr = new StreamReader(myPeer.GetStream());
-                    sw.WriteLine("s");
+                    sw.WriteLine(String.Format("s;{0}",ps.getPokemonByPos(0)));
                     sw.Flush();
                     string s = sr.ReadLine();
                     Console.WriteLine(s);
@@ -185,7 +192,7 @@ namespace BattagliaPokemon
                 _spriteBatch.Draw(BattleTexture, new Vector2(0, 0), Color.White);
                 for (int i = 0; i < allpokemon.Length; i++)
                 {
-                    if(pokeomSceltoPeer2 == allpokemon[i].nome)
+                    if(pokemonSceltoPeer2 == allpokemon[i].nome)
                     {
                         _spriteBatch.Draw(allpokemon[i].front, new Vector2(500, 20), Color.White);
                         _spriteBatch.DrawString(generalFont,allpokemon[i].nome, new Vector2(400, 20), Color.Black);
@@ -254,14 +261,14 @@ namespace BattagliaPokemon
                 {
                     gameLogic = "battle";
                     string nomeAvversario = "da prendere dall'xml ricevuto";//da sostituire con l'xml
-                    pokeomSceltoPeer2 = ps.getPokemonByPos(0);//da sostituire con l'xml
-                    sw.WriteLine(pokeomSceltoPeer2);
+                    pokemonSceltoPeer1 = ps.getPokemonByPos(0);//da sostituire con l'xml
+                    sw.WriteLine(pokemonSceltoPeer1);
                     sw.Flush();
                 }
                 else if(strClientInput == "s")  //peer 1 riceve i pokemon del peer 2 e quindi il peer 1 invia il suo pokemon
                 {
-                    pokemonSceltoPeer1 = ps.getPokemonByPos(0);//da sostituire con l'xml
-                    sw.WriteLine(pokemonSceltoPeer1);
+                    pokemonSceltoPeer2 = strClientInput.Substring(2);//da sostituire con l'xml
+                    sw.WriteLine(pokemonSceltoPeer2);
                     sw.Flush();
                 }
                 else if (strClientInput == "a")
