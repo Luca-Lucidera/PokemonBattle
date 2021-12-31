@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Retro/BulbasaurRetro.png</SourceFile>
-  <SourceTime>2021-12-19T10:53:30.1279492+01:00</SourceTime>
-  <DestFile>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/bin/DesktopGL/Pokemon/Retro/BulbasaurRetro.xnb</DestFile>
-  <DestTime>2021-12-31T09:46:36.8745261+01:00</DestTime>
+  <SourceFile>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Desktop - Battaglia.png</SourceFile>
+  <SourceTime>2021-12-31T09:45:04.0747681+01:00</SourceTime>
+  <DestFile>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/bin/DesktopGL/Desktop - Battaglia.xnb</DestFile>
+  <DestTime>2021-12-31T09:46:36.4906878+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-12-08T17:35:54+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

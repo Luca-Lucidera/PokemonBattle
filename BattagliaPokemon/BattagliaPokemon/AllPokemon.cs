@@ -34,7 +34,7 @@ namespace BattagliaPokemon
                 pokemon[i].nome = tmp.Substring(0, pos);
                 pokemon[i].front = g.Content.Load<Texture2D>("Pokemon/Front/"+Path.GetFileNameWithoutExtension(FilesFront[i])); //li prendo uno a uno
                 pokemon[i].retro = g.Content.Load<Texture2D>("Pokemon/Retro/"+Path.GetFileNameWithoutExtension(FilesRetro[i])); //li prendo uno a uno
-                
+                pokemon[i].vita = 200;
                 switch (pokemon[i].nome)
                 {
                     case ("Charmander"):

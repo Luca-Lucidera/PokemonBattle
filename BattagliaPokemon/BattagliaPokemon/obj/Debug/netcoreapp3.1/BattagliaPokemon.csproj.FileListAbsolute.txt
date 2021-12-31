@@ -80,3 +80,4 @@ C:\Users\lucid\Desktop\GIT REPOSITORY\PokemonBattle\BattagliaPokemon\BattagliaPo
 C:\Users\lucid\Desktop\GIT REPOSITORY\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\sceltaNomeD1.xnb
 D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\ipselect.xnb
 D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\sceltaNomeD1.xnb
+D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Desktop - Battaglia.xnb

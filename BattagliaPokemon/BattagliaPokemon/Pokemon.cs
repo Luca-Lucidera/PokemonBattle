@@ -13,6 +13,7 @@ namespace BattagliaPokemon
         public Texture2D retro { set; get; }
         public Vector2 posizione { set; get; }
         public Mossa[] mosse { set; get; }
+        public int vita { set; get; }
         public Pokemon()
         {
             nome = "";

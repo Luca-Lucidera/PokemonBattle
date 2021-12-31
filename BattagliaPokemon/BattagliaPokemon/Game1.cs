@@ -2,12 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 using System.Net.Sockets;
 using System.IO;
@@ -25,18 +19,25 @@ namespace BattagliaPokemon
         private Texture2D personaggio; // 96 x 104 px
         private Texture2D confirmButton; // 252 x 91 px
         private Texture2D test;
+        private Texture2D BattleTexture;
+
+
         private AllPokemon ap;
         private PokemonScelti ps;
-
+        private Pokemon pokemonAvversario;
 
         private string nome;
-        private string gameLogic = "ipSelection";
+        private string gameLogic = "gameStart";
         private string ipAvversario = "";
 
+        string pokemonSceltoPeer1;
+        string pokeomSceltoPeer2;
 
         TcpClient myPeer;
         TcpClient secondPeer;
         Thread receivingThread;
+
+        bool done = false; //da eliminare
 
         public Game1()
         {
@@ -49,7 +50,7 @@ namespace BattagliaPokemon
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            myPeer = new TcpClient();
+           
             ThreadStart start = new ThreadStart(riceviDati);
             receivingThread = new Thread(start);
             receivingThread.IsBackground = true;
@@ -68,7 +69,10 @@ namespace BattagliaPokemon
             personaggio = Content.Load<Texture2D>("sceltaNomeD1");
             confirmButton = Content.Load<Texture2D>("confButton");
             test = Content.Load<Texture2D>("ipselect");
+            BattleTexture = Content.Load<Texture2D>("Desktop - Battaglia");
 
+            pokemonSceltoPeer1 = "";
+            pokeomSceltoPeer2 = "";
             nome = "";
             // TODO: use this.Content to load your game content here
         }
@@ -107,6 +111,7 @@ namespace BattagliaPokemon
                 if (mouseState.LeftButton == ButtonState.Pressed)
                     if (!ipAvversario.Equals(""))
                     {
+                        myPeer = new TcpClient();
                         myPeer.Connect(ipAvversario, 4269);
                         //da mandare il primo pokemon scelto (peer 1)
                         string daMandare = "m";
@@ -114,9 +119,7 @@ namespace BattagliaPokemon
                         StreamReader sr = new StreamReader(myPeer.GetStream());
                         sw.WriteLine(daMandare);
                         sw.Flush();
-                        string x = sr.ReadLine();
-                        Console.WriteLine(x);
-                        //se il tipo accetta
+                        pokeomSceltoPeer2 = sr.ReadLine();
                         gameLogic = "battle";
                         //se non accetta gameLogic = "ipSelection"
                         sr.Close();
@@ -126,16 +129,21 @@ namespace BattagliaPokemon
             }
             else if (gameLogic.Equals("battle"))
             {
-                
-                    
+                /*
+                if (done == false)
+                {
+                    myPeer = new TcpClient();
                     myPeer.Connect(ipAvversario, 4269);
                     StreamWriter sw = new StreamWriter(myPeer.GetStream());
                     StreamReader sr = new StreamReader(myPeer.GetStream());
-                    sw.WriteLine("a");
+                    sw.WriteLine("s");
                     sw.Flush();
                     string s = sr.ReadLine();
+                    Console.WriteLine(s);
                     sr.Close();
-                
+                    done = true;
+                }
+                */
             }
             base.Update(gameTime);
         }
@@ -173,7 +181,23 @@ namespace BattagliaPokemon
             }
             else if (gameLogic.Equals("battle"))
             {
-
+                Pokemon[] allpokemon = ap.getPokemon();
+                _spriteBatch.Draw(BattleTexture, new Vector2(0, 0), Color.White);
+                for (int i = 0; i < allpokemon.Length; i++)
+                {
+                    if(pokeomSceltoPeer2 == allpokemon[i].nome)
+                    {
+                        _spriteBatch.Draw(allpokemon[i].front, new Vector2(500, 20), Color.White);
+                        _spriteBatch.DrawString(generalFont,allpokemon[i].nome, new Vector2(400, 20), Color.Black);
+                        _spriteBatch.DrawString(generalFont, "Vita: "+Convert.ToString(allpokemon[i].vita), new Vector2(400, 40), Color.Black);
+                    }
+                    if (pokemonSceltoPeer1 == allpokemon[i].nome)
+                    {
+                        _spriteBatch.Draw(allpokemon[i].retro, new Vector2(200, 200), Color.White);
+                        _spriteBatch.DrawString(generalFont, allpokemon[i].nome, new Vector2(270, 200), Color.Black);
+                        _spriteBatch.DrawString(generalFont, "Vita: " + Convert.ToString(allpokemon[i].vita), new Vector2(270, 220), Color.Black);
+                    }
+                }
             }
             _spriteBatch.End();
             base.Draw(gameTime);
@@ -226,11 +250,18 @@ namespace BattagliaPokemon
                 //deve ritornare il primo pokemon scelto (peer 2)
 
                 String strClientInput = sr.ReadLine();
-                if (strClientInput == "m")
+                if (strClientInput == "m") //peer 1 contatta peer 2 e il peer 2 gli manda il suo pokemon
                 {
                     gameLogic = "battle";
-                    string mioPokemon = "s;Charmander;200;elettro";
-                    sw.WriteLine(mioPokemon);
+                    string nomeAvversario = "da prendere dall'xml ricevuto";//da sostituire con l'xml
+                    pokeomSceltoPeer2 = ps.getPokemonByPos(0);//da sostituire con l'xml
+                    sw.WriteLine(pokeomSceltoPeer2);
+                    sw.Flush();
+                }
+                else if(strClientInput == "s")  //peer 1 riceve i pokemon del peer 2 e quindi il peer 1 invia il suo pokemon
+                {
+                    pokemonSceltoPeer1 = ps.getPokemonByPos(0);//da sostituire con l'xml
+                    sw.WriteLine(pokemonSceltoPeer1);
                     sw.Flush();
                 }
                 else if (strClientInput == "a")
