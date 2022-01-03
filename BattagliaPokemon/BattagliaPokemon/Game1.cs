@@ -15,24 +15,30 @@ namespace BattagliaPokemon
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        //font per disegnare
         private SpriteFont generalFont;
+        
+        //texture da disegnare
         private Texture2D personaggio; // 96 x 104 px
         private Texture2D confirmButton; // 252 x 91 px
-        private Texture2D test;
+        private Texture2D ipSelection;
         private Texture2D BattleTexture;
 
-
-        private AllPokemon ap;
-        private PokemonScelti ps;
+        //classi riguardo i Pokemon
+        private AllPokemon allPokemon; //classe contenente tutti i pokemon del gioco
+        private PokemonScelti mieiPokemon; //classe contente i pokemon che scieglierò nella schermata di scelta dei pokemon (gameLogic = confButton)
         private Pokemon pokemonAvversario;
 
         private string nome;
         private string gameLogic = "gameStart";
+        private string battleLogic = "";
         private string ipAvversario = "";
 
-        string pokemonSceltoPeer1;
-        string pokemonSceltoPeer2;
+        //variabili temporanee da sostituire con classi
+        string strMioPokemon;
+        string strPokemonSceltoAvversario;
 
+        //connessione
         TcpClient myPeer;
         TcpClient secondPeer;
         Thread receivingThread;
@@ -50,7 +56,7 @@ namespace BattagliaPokemon
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-           
+
             ThreadStart start = new ThreadStart(riceviDati);
             receivingThread = new Thread(start);
             receivingThread.IsBackground = true;
@@ -63,18 +69,30 @@ namespace BattagliaPokemon
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            ap = new AllPokemon(this, _graphics);
-            ps = new PokemonScelti();
+
+            //vado a caricare le texture
             generalFont = Content.Load<SpriteFont>("Font");
             personaggio = Content.Load<Texture2D>("sceltaNomeD1");
             confirmButton = Content.Load<Texture2D>("confButton");
-            test = Content.Load<Texture2D>("ipselect");
+            ipSelection = Content.Load<Texture2D>("ipselect");
             BattleTexture = Content.Load<Texture2D>("Desktop - Battaglia");
 
-            pokemonSceltoPeer1 = "";
-            pokemonSceltoPeer2 = "";
+            //creo oggetto mio pokemon
+            mieiPokemon = new PokemonScelti();
+            
+            /*
+             * per inserire delle texture nella classe all pokeon devo per forza passargli l'oggetto Game1 (this)
+             * _graphics serve per andare a vedere la grandezza dello schermo, e quindi calcolare dove posizionare i pokemon
+             */
+            allPokemon = new AllPokemon(this, _graphics);
+
+            //nome del mio allenatore
             nome = "";
-            // TODO: use this.Content to load your game content here
+            
+            //stringhe temporanee da eliminare con delle classi
+            strMioPokemon = "";
+            strPokemonSceltoAvversario = "";
+            
         }
 
         protected override void Update(GameTime gameTime)
@@ -82,75 +100,90 @@ namespace BattagliaPokemon
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
-            var mouseState = Mouse.GetState();
-            Vector2 mousePosition = new Vector2(mouseState.X, mouseState.Y);
+            var mouseState = Mouse.GetState(); //vado a prendere lo stato del mouse
+            Vector2 mousePosition = new Vector2(mouseState.X, mouseState.Y); //vado a prendere la posizione del mouse
 
-            if (gameLogic.Equals("gameStart"))
+            //INIZIO DELLA GAME LOGIC
+            
+            if (gameLogic.Equals("gameStart"))//schermata iniziale
             {
-                if (mouseState.LeftButton == ButtonState.Pressed)
-                    if (!nome.Equals(""))
-                        if ((mousePosition.X >= 325 && mousePosition.X <= 325 + 150) && (mousePosition.Y >= 410 && mousePosition.Y <= 410 + 25))
+                if (mouseState.LeftButton == ButtonState.Pressed) //controllo se il mouse ha premuto il tasto sinistro
+                    if (!nome.Equals("")) //controllo che il nome non sia vuoto
+                        if ((mousePosition.X >= 325 && mousePosition.X <= 325 + 150) && (mousePosition.Y >= 410 && mousePosition.Y <= 410 + 25)) //controllo se ha premuto il pulsante
                             gameLogic = "sceltaPokemon";
-            }
-            else if (gameLogic.Equals("sceltaPokemon"))
+            }  
+            else if (gameLogic.Equals("sceltaPokemon")) //schermata scelta del pokemon
             {
-                if (mouseState.LeftButton == ButtonState.Pressed)
+                if (mouseState.LeftButton == ButtonState.Pressed)//controllo se il mouse ha premuto il tasto sinistro
                 {
-                    var tmp = ap.CheckPokemonPremuto(mousePosition);
-                    if (tmp != null)
-                        ps.addPokemon(tmp);
-                    if (mouseState.LeftButton == ButtonState.Pressed)
-                        if (!ps.showAll().Equals(""))
-                            if ((mousePosition.X >= 250 && mousePosition.X <= 250 + 252) && (mousePosition.Y >= 350 && mousePosition.Y <= 350 + 91))
+                    var tmp = allPokemon.CheckPokemonPremuto(mousePosition);//vado a vedere se il pokemon è stato premuto 
+                    if (tmp != null) //controllo che il risultato non sia nullo
+                        mieiPokemon.addPokemon(tmp);//aggiungo il pokemon scelto alla classe mieiPokemon
+                    
+                    //blocco per proseguire alla prossima schemrata
+                    if (mouseState.LeftButton == ButtonState.Pressed)//controllo se è stato premuto il tasto sinistro
+                        if (!mieiPokemon.showAll().Equals(""))//controllo che ci sia almeno un pokemon nella mia selezione, in base allo showAll
+                            if ((mousePosition.X >= 250 && mousePosition.X <= 250 + 252) && (mousePosition.Y >= 350 && mousePosition.Y <= 350 + 91))//controllo che sia stato premuto nella posizione corretta
                                 gameLogic = "ipSelection";
                 }
             }
-            else if (gameLogic.Equals("ipSelection"))
+            else if (gameLogic.Equals("ipSelection")) //schermata della selezione ip
             {
-                if (mouseState.LeftButton == ButtonState.Pressed)
-                    if (!ipAvversario.Equals(""))
+                if (mouseState.LeftButton == ButtonState.Pressed) //controllo se è stato premuto il tato sinistro
+                    if (!ipAvversario.Equals("")) //controllo che l'ip non sia vuoto
                     {
-                        myPeer = new TcpClient();
-                        myPeer.Connect(ipAvversario, 4269);
-                        //da mandare il primo pokemon scelto (peer 1)
-                        string daMandare = "m";
-                        StreamWriter sw = new StreamWriter(myPeer.GetStream());
+                        myPeer = new TcpClient(); //creo l'oggetto myPeer che rappresenta il mio client
+                        myPeer.Connect(ipAvversario, 42069); //provo a connettermi tramite il metodo connect, dandogli come input l'ip del secondo peer e la porta di ascolto
+                        
+                        string mioNomeDaMandare = "m;"+nome; //invio la m e il mio nome
+                        
+                        //prendo lo stream in lettura e scrittura del mio peer
+                        StreamWriter sw = new StreamWriter(myPeer.GetStream()); 
                         StreamReader sr = new StreamReader(myPeer.GetStream());
-                        sw.WriteLine(daMandare);
-                        sw.Flush();
+                        
+                        //invio il mio nome con il relativo codice al secondo peer
+                        sw.WriteLine(mioNomeDaMandare);
+                        sw.Flush(); //svuoto il buffer
 
-                        pokemonSceltoPeer2 = sr.ReadLine();
+                        //TODO: ogni stringa di invio e ricezione deve essere trasformata in XML e quindi in classe
+                        //da qui io aspetto la risposta del secondo peer, io mi aspetto di ricevere il suo pokemon scelto per primo.
+                        strPokemonSceltoAvversario = sr.ReadLine();
                         
-                        gameLogic = "battle";
-                        //se non accetta gameLogic = "ipSelection"
-                        sw.WriteLine(String.Format("s;{0}", ps.getPokemonByPos(0)));
+                        //dopo aver ricevuto i pokemon dal secondo peer io gli invio il mio primo pokemon
+                        sw.WriteLine(String.Format("s;{0}", mieiPokemon.getPokemonByPos(0)));
                         sw.Flush();
-                        pokemonSceltoPeer1 = sr.ReadLine();
-                        
+                        strMioPokemon = sr.ReadLine();
+
                         sr.Close();
                         sw.Close();
-                        
+                        gameLogic = "battle";
                     }
             }
             else if (gameLogic.Equals("battle"))
             {
-                /*
-                
-                if (done == false)
+                if (mouseState.LeftButton == ButtonState.Pressed)
                 {
-                    myPeer = new TcpClient();
-                    myPeer.Connect(ipAvversario, 4269);
-                    StreamWriter sw = new StreamWriter(myPeer.GetStream());
-                    StreamReader sr = new StreamReader(myPeer.GetStream());
-                    sw.WriteLine(String.Format("s;{0}",ps.getPokemonByPos(0)));
-                    sw.Flush();
-                    string s = sr.ReadLine();
-                    Console.WriteLine(s);
-                    sr.Close();
-                    done = true;
+                    if(battleLogic == "")
+                    {
+                        if (mousePosition.X >= 182 && mousePosition.X <= 182 + 190 && mouseState.Y >= 328 && mouseState.Y <= 328 + 60)
+                        {
+                            battleLogic = "Zaino";
+                        }
+                        else if (mousePosition.X >= 423 && mousePosition.X <= 423 + 190 && mouseState.Y >= 328 && mouseState.Y <= 328 + 60)
+                        {
+                            battleLogic = "Attacca";
+                        }
+                        else if (mousePosition.X >= 182 && mousePosition.X <= 182 + 190 && mouseState.Y >= 398 && mouseState.Y <= 398 + 60)
+                        {
+                            battleLogic = "Fuga";
+                        }
+                        else if (mousePosition.X >= 423 && mousePosition.X <= 423 + 190 && mouseState.Y >= 398 && mouseState.Y <= 398 + 60)
+                        {
+                            battleLogic = "Cambia";
+                        }
+                    }
+                    
                 }
-                */
             }
             base.Update(gameTime);
         }
@@ -168,7 +201,7 @@ namespace BattagliaPokemon
             }
             else if (gameLogic.Equals("sceltaPokemon"))
             {
-                Pokemon[] allpokemon = ap.getPokemon();
+                Pokemon[] allpokemon = allPokemon.getPokemon();
                 int space = 0;
                 int lastX = 0;
                 for (int i = 0; i < allpokemon.Length; i++)
@@ -178,37 +211,143 @@ namespace BattagliaPokemon
                     space += 40;
                     lastX = Convert.ToInt32(allpokemon[i].posizione.X);
                 }
-                _spriteBatch.DrawString(generalFont, "hai selezionato: " + ps.showAll(), new Vector2(0, 200), Color.Black);
+                _spriteBatch.DrawString(generalFont, "hai selezionato: " + mieiPokemon.showAll(), new Vector2(0, 200), Color.Black);
                 _spriteBatch.Draw(confirmButton, new Vector2(250, 350), Color.White);
             }
             else if (gameLogic.Equals("ipSelection"))
             {
-                _spriteBatch.Draw(test, new Vector2(0, 0), Color.White);
+                _spriteBatch.Draw(ipSelection, new Vector2(0, 0), Color.White);
                 _spriteBatch.DrawString(generalFont, ipAvversario, new Vector2(380, 175), Color.Black);
             }
             else if (gameLogic.Equals("battle"))
             {
-                Pokemon[] allpokemon = ap.getPokemon();
-                _spriteBatch.Draw(BattleTexture, new Vector2(0, 0), Color.White);
-                for (int i = 0; i < allpokemon.Length; i++)
+                if (battleLogic.Equals("Zaino")){
+
+                }
+                else if (battleLogic.Equals("Attacca"))
                 {
-                    if(pokemonSceltoPeer2 == allpokemon[i].nome)
+                    Texture2D rettMossa = new Texture2D(GraphicsDevice, 1, 1);
+                    rettMossa.SetData(new[] { Color.White });
+                    Pokemon[] allpokemon = allPokemon.getPokemon();
+                    for (int i = 0; i < allpokemon.Length; i++)
                     {
-                        _spriteBatch.Draw(allpokemon[i].front, new Vector2(500, 20), Color.White);
-                        _spriteBatch.DrawString(generalFont,allpokemon[i].nome, new Vector2(400, 20), Color.Black);
-                        _spriteBatch.DrawString(generalFont, "Vita: "+Convert.ToString(allpokemon[i].vita), new Vector2(400, 40), Color.Black);
+                        if (strPokemonSceltoAvversario == allpokemon[i].nome)
+                        {
+                            _spriteBatch.Draw(allpokemon[i].front, new Vector2(500, 20), Color.White);
+                            _spriteBatch.DrawString(generalFont, allpokemon[i].nome, new Vector2(400, 20), Color.Black);
+                            _spriteBatch.DrawString(generalFont, "Vita: " + Convert.ToString(allpokemon[i].vita), new Vector2(400, 40), Color.Black);
+                        }
+                        if (strMioPokemon == allpokemon[i].nome)
+                        {
+                            _spriteBatch.Draw(allpokemon[i].retro, new Vector2(200, 200), Color.White);
+                            _spriteBatch.DrawString(generalFont, allpokemon[i].nome, new Vector2(270, 200), Color.Black);
+                            _spriteBatch.DrawString(generalFont, "Vita: " + Convert.ToString(allpokemon[i].vita), new Vector2(270, 220), Color.Black);
+
+                            int xAdder1 = 0;
+                            int xAdder2 = 0;
+                            for (int j = 0; j < allpokemon[i].mosse.Length; j++)
+                            {
+                                if(j < 2)
+                                {
+                                    if (allpokemon[i].mosse[j].tipo == "Normale")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Gray);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1,330),Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Fouco")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Orange);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 330), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Erba")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Green);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 330), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Psico")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Purple);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 330), Color.Black);
+
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Acqua")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Blue);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 330), Color.Black);
+                                    }
+                                    xAdder1 = 241;
+                                }
+                                else
+                                {
+                                    if (allpokemon[i].mosse[j].tipo == "Normale")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Gray);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Fouco")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Orange);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Erba")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Green);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Psico")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Purple);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Acqua")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Blue);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                    }
+                                    xAdder2 = 241;
+                                }
+                            }
+                        }
                     }
-                    if (pokemonSceltoPeer1 == allpokemon[i].nome)
+                    
+                    
+                }
+                else if (battleLogic.Equals("Fuga"))
+                {
+
+                }
+                else if (battleLogic.Equals("Cambia"))
+                {
+
+                }
+                else //esegue se non c'è una battleLogic (eseguita almeno una volta 
+                {
+                    Pokemon[] allpokemon = allPokemon.getPokemon();
+                    _spriteBatch.Draw(BattleTexture, new Vector2(0, 0), Color.White);
+                    for (int i = 0; i < allpokemon.Length; i++)
                     {
-                        _spriteBatch.Draw(allpokemon[i].retro, new Vector2(200, 200), Color.White);
-                        _spriteBatch.DrawString(generalFont, allpokemon[i].nome, new Vector2(270, 200), Color.Black);
-                        _spriteBatch.DrawString(generalFont, "Vita: " + Convert.ToString(allpokemon[i].vita), new Vector2(270, 220), Color.Black);
+                        if (strPokemonSceltoAvversario == allpokemon[i].nome)
+                        {
+                            _spriteBatch.Draw(allpokemon[i].front, new Vector2(500, 20), Color.White);
+                            _spriteBatch.DrawString(generalFont, allpokemon[i].nome, new Vector2(400, 20), Color.Black);
+                            _spriteBatch.DrawString(generalFont, "Vita: " + Convert.ToString(allpokemon[i].vita), new Vector2(400, 40), Color.Black);
+                        }
+                        if (strMioPokemon == allpokemon[i].nome)
+                        {
+                            _spriteBatch.Draw(allpokemon[i].retro, new Vector2(200, 200), Color.White);
+                            _spriteBatch.DrawString(generalFont, allpokemon[i].nome, new Vector2(270, 200), Color.Black);
+                            _spriteBatch.DrawString(generalFont, "Vita: " + Convert.ToString(allpokemon[i].vita), new Vector2(270, 220), Color.Black);
+                        }
                     }
                 }
+                
             }
             _spriteBatch.End();
             base.Draw(gameTime);
         }
+        
+        //funzione per gestire l'input da tastiera
         private void TextInputHandler(object sender, TextInputEventArgs args)
         {
             var character = args.Character;
@@ -246,7 +385,7 @@ namespace BattagliaPokemon
         //funzione eseguita dal thread per ricevere i dati dal 1° peer al 2° peer
         private void riceviDati()
         {
-            TcpListener listener = new TcpListener(IPAddress.Any, 4269);
+            TcpListener listener = new TcpListener(IPAddress.Any, 42069);
             listener.Start();
             StreamWriter sw;
             StreamReader sr;
@@ -255,23 +394,21 @@ namespace BattagliaPokemon
             {
                 sw = new StreamWriter(secondPeer.GetStream());
                 sr = new StreamReader(secondPeer.GetStream());
-                //deve ritornare il primo pokemon scelto (peer 2)
 
                 String strClientInput = sr.ReadLine();
-                if(strClientInput != null)
+                if (strClientInput != null)
                 {
-                    if (strClientInput == "m") //peer 1 contatta peer 2 e il peer 2 gli manda il suo pokemon
+                    if (strClientInput.StartsWith("m")) //peer 1 contatta peer 2 e il peer 2 gli manda il suo pokemon
                     {
-                        gameLogic = "battle";
-                        string nomeAvversario = "da prendere dall'xml ricevuto";//da sostituire con l'xml
-                        pokemonSceltoPeer1 = ps.getPokemonByPos(0);//da sostituire con l'xml
-                        sw.WriteLine(pokemonSceltoPeer1);
+                        strMioPokemon = mieiPokemon.getPokemonByPos(0);//da sostituire con l'xml
+                        sw.WriteLine(strMioPokemon);
                         sw.Flush();
+                        gameLogic = "battle";
                     }
                     else if (strClientInput.StartsWith("s"))  //peer 1 riceve i pokemon del peer 2 e quindi il peer 1 invia il suo pokemon
                     {
-                        pokemonSceltoPeer2 = strClientInput.Substring(2);//da sostituire con l'xml
-                        sw.WriteLine(pokemonSceltoPeer2);
+                        strPokemonSceltoAvversario = strClientInput.Substring(2);//da sostituire con l'xml
+                        sw.WriteLine(strPokemonSceltoAvversario);
                         sw.Flush();
                     }
                     else if (strClientInput == "a")
@@ -281,8 +418,8 @@ namespace BattagliaPokemon
                         sw.Flush();
                     }
                 }
-                
-                
+
+
             }
             sw.Close();
             sr.Close();

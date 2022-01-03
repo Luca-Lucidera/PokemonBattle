@@ -6,10 +6,10 @@ namespace BattagliaPokemon
 {
     class Mossa
     {
-        string nome { set; get; }
-        string tipo { set; get; }
-        int danni { set; get; }
-        int utilizzi { set; get; }
+        public string nome { set; get; }
+        public string tipo { set; get; }
+        public int danni { set; get; }
+        public int utilizzi { set; get; }
 
         public Mossa(string nome, string tipo, int danni, int utilizzi)
         {
