@@ -154,10 +154,11 @@ namespace BattagliaPokemon
                         //TODO: ogni stringa di invio e ricezione deve essere trasformata in XML e quindi in classe
                         //da qui io aspetto la risposta del secondo peer, io mi aspetto di ricevere il suo pokemon scelto per primo.
                         strPokemonSceltoAvversario = sr.ReadLine();
-                        
+
 
                         //dopo aver ricevuto i pokemon dal secondo peer io gli invio il mio primo pokemon
-                        sw.WriteLine(String.Format("s;{0}", mieiPokemon.getPokemonByPos(0)));
+                        
+                        sw.WriteLine(String.Format("s;{0}", strMioPokemon));
                         sw.Flush();
 
                         sw.Close();
@@ -410,7 +411,8 @@ namespace BattagliaPokemon
                         //NEL PEER 2 
                         mioPokemon = mieiPokemon.getPokemonByPos(0);//da sostituire con l'xml
                         string xmlDaRitornare = "valore contenuto in mio pokemon";
-                        sw.WriteLine(xmlDaRitornare);
+                        strMioPokemon = mieiPokemon.getPokemonByPos(0).nome;
+                        sw.WriteLine(strMioPokemon);
                         sw.Flush();
                     }
                     else if (strClientInput.StartsWith("s"))  //peer 1 riceve i pokemon del peer 2 e quindi il peer 1 invia il suo pokemon
