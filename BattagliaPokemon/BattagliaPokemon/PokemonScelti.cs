@@ -25,9 +25,9 @@ namespace BattagliaPokemon
             return s;
         }
 
-        public string getPokemonByPos(int index)
+        public Pokemon getPokemonByPos(int index)
         {
-            return ps.ElementAt(index).nome;
+            return ps.ElementAt(index);
         }
     }
 }

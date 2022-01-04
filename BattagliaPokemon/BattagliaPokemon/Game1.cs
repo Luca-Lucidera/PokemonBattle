@@ -28,6 +28,7 @@ namespace BattagliaPokemon
         private AllPokemon allPokemon; //classe contenente tutti i pokemon del gioco
         private PokemonScelti mieiPokemon; //classe contente i pokemon che scieglierò nella schermata di scelta dei pokemon (gameLogic = confButton)
         private Pokemon pokemonAvversario;
+        private Pokemon mioPokemon;
 
         private string nome;
         private string gameLogic = "gameStart";
@@ -85,6 +86,8 @@ namespace BattagliaPokemon
              * _graphics serve per andare a vedere la grandezza dello schermo, e quindi calcolare dove posizionare i pokemon
              */
             allPokemon = new AllPokemon(this, _graphics);
+            pokemonAvversario = new Pokemon();
+            mioPokemon = new Pokemon();
 
             //nome del mio allenatore
             nome = "";
@@ -132,6 +135,9 @@ namespace BattagliaPokemon
                 if (mouseState.LeftButton == ButtonState.Pressed) //controllo se è stato premuto il tato sinistro
                     if (!ipAvversario.Equals("")) //controllo che l'ip non sia vuoto
                     {
+                        //da eliminare
+                        strMioPokemon = mieiPokemon.getPokemonByPos(0).nome;
+
                         myPeer = new TcpClient(); //creo l'oggetto myPeer che rappresenta il mio client
                         myPeer.Connect(ipAvversario, 42069); //provo a connettermi tramite il metodo connect, dandogli come input l'ip del secondo peer e la porta di ascolto
                         
@@ -149,13 +155,14 @@ namespace BattagliaPokemon
                         //da qui io aspetto la risposta del secondo peer, io mi aspetto di ricevere il suo pokemon scelto per primo.
                         strPokemonSceltoAvversario = sr.ReadLine();
                         
+
                         //dopo aver ricevuto i pokemon dal secondo peer io gli invio il mio primo pokemon
                         sw.WriteLine(String.Format("s;{0}", mieiPokemon.getPokemonByPos(0)));
                         sw.Flush();
-                        strMioPokemon = sr.ReadLine();
 
-                        sr.Close();
                         sw.Close();
+                        sr.Close();
+                        sr.Dispose();
                         gameLogic = "battle";
                     }
             }
@@ -400,18 +407,18 @@ namespace BattagliaPokemon
                 {
                     if (strClientInput.StartsWith("m")) //peer 1 contatta peer 2 e il peer 2 gli manda il suo pokemon
                     {
-                        strMioPokemon = mieiPokemon.getPokemonByPos(0);//da sostituire con l'xml
-                        sw.WriteLine(strMioPokemon);
+                        //NEL PEER 2 
+                        mioPokemon = mieiPokemon.getPokemonByPos(0);//da sostituire con l'xml
+                        string xmlDaRitornare = "valore contenuto in mio pokemon";
+                        sw.WriteLine(xmlDaRitornare);
                         sw.Flush();
-                        gameLogic = "battle";
                     }
                     else if (strClientInput.StartsWith("s"))  //peer 1 riceve i pokemon del peer 2 e quindi il peer 1 invia il suo pokemon
                     {
-                        strPokemonSceltoAvversario = strClientInput.Substring(2);//da sostituire con l'xml
-                        sw.WriteLine(strPokemonSceltoAvversario);
-                        sw.Flush();
+                        strPokemonSceltoAvversario = strClientInput.Substring(2);
+                        gameLogic = "battle";
                     }
-                    else if (strClientInput == "a")
+                    else if (strClientInput.StartsWith("a"))
                     {
                         string mioPokemon = "r;Charmander;150;1";
                         sw.WriteLine(mioPokemon);
