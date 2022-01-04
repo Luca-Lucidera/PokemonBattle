@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BattagliaPokemon
 {
-    class Mossa
+    public class Mossa
     {
         public string nome { set; get; }
         public string tipo { set; get; }

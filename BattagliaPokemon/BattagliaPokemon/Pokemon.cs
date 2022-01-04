@@ -6,7 +6,7 @@ using System.IO;
 
 namespace BattagliaPokemon
 {
-    class Pokemon
+    public class Pokemon
     {
         public string nome { set; get; }
         public Texture2D front { set; get; }
@@ -25,6 +25,15 @@ namespace BattagliaPokemon
             {
                 mosse[i] = null;
             }
+        }   
+        public Pokemon(string nome, Texture2D front, Texture2D retro, Vector2 posizione, Mossa[] mosse, int vita)
+        {
+            this.nome = nome;
+            this.front = front;
+            this.retro = retro;
+            this.posizione = posizione;
+            this.mosse = mosse;
+            this.vita = vita;
         }
         public void aggiungiMossa(Mossa m)
         {
@@ -36,6 +45,13 @@ namespace BattagliaPokemon
                     break;
                 }
             }
+        }
+
+     
+
+        public void aggiungiMosse(Mossa[] m)
+        {
+            mosse = m;
         }
     }
 }

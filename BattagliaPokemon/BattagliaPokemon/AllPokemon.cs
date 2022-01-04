@@ -2,7 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace BattagliaPokemon
 {
@@ -45,37 +48,46 @@ namespace BattagliaPokemon
                 pokemon[i].front = g.Content.Load<Texture2D>("Pokemon/Front/"+Path.GetFileNameWithoutExtension(FilesFront[i])); //Vado a prendere l'immagine frontale del pokemon
                 pokemon[i].retro = g.Content.Load<Texture2D>("Pokemon/Retro/"+Path.GetFileNameWithoutExtension(FilesRetro[i])); //Vado a prendere l'immagine dle retro del pokemon
                 pokemon[i].vita = 200; //imposto il nome
+
+                XmlDocument Xdoc = new XmlDocument();
+                XmlTextReader xtr;
+                XmlNode nodoMosse;
                 switch (pokemon[i].nome) //in base al nome vado a impostare le mosse (Nome, Tipo, Danno, UtilizziMassimi) info prese da https://wiki.pokemoncentral.it/Charizard/Mosse_apprese_in_prima_generazione
                 {
                     case ("Charmander"):
-                        m = new Mossa("Graffio", "Normale", 40, 35);
-                        pokemon[i].aggiungiMossa(m);
-                        m = new Mossa("Ruggito", "Normale", 0, 40);
-                        pokemon[i].aggiungiMossa(m);
-                        m = new Mossa("Braciere", "Fouco", 40, 25);
-                        pokemon[i].aggiungiMossa(m);
-                        m = new Mossa("Fulmisguardo", "Normale", 0, 30);
-                        pokemon[i].aggiungiMossa(m);
+                        
+                        Xdoc.Load("../../../Content/Charizard.xml");
+                        //                             Mosse         Mossa singola
+                        nodoMosse=Xdoc.DocumentElement.ChildNodes[6].ChildNodes[0];
+
+                        for (int ii = 0; ii < nodoMosse.ChildNodes.Count; ii++)
+                        {
+                            nodoMosse = Xdoc.DocumentElement.ChildNodes[6].ChildNodes[ii];
+                            pokemon[i].aggiungiMossa(new Mossa(nodoMosse.ChildNodes[0].InnerText, nodoMosse.ChildNodes[1].InnerText, Convert.ToInt32(nodoMosse.ChildNodes[2].InnerText), Convert.ToInt32(nodoMosse.ChildNodes[3].InnerText)));
+                        }
+
                         break;
                     case ("Bulbasaur"):
-                        m = new Mossa("Azione", "Normale", 35, 35);
-                        pokemon[i].aggiungiMossa(m);
-                        m = new Mossa("Ruggito", "Normale", 0, 40);
-                        pokemon[i].aggiungiMossa(m);
-                        m = new Mossa("Parassiseme", "Erba", 0, 10);
-                        pokemon[i].aggiungiMossa(m);
-                        m = new Mossa("Frustata", "Erba", 35, 10);
-                        pokemon[i].aggiungiMossa(m);
+                        Xdoc.Load("../../../Content/Bulbasaur.xml");
+                        //                               Mosse         Mossa singola
+                        nodoMosse = Xdoc.DocumentElement.ChildNodes[6].ChildNodes[0];
+
+                        for (int ii = 0; ii < nodoMosse.ChildNodes.Count; ii++)
+                        {
+                            nodoMosse = Xdoc.DocumentElement.ChildNodes[6].ChildNodes[ii];
+                            pokemon[i].aggiungiMossa(new Mossa(nodoMosse.ChildNodes[0].InnerText, nodoMosse.ChildNodes[1].InnerText, Convert.ToInt32(nodoMosse.ChildNodes[2].InnerText), Convert.ToInt32(nodoMosse.ChildNodes[3].InnerText)));
+                        }
                         break;
                     case ("poliwhirl"):
-                        m = new Mossa("Bolla", "Acqua", 20, 30);
-                        pokemon[i].aggiungiMossa(m);
-                        m = new Mossa("Ipnosi", "Psico", 0, 20);
-                        pokemon[i].aggiungiMossa(m);
-                        m = new Mossa("Pistolacqua", "Acqua", 40, 25);
-                        pokemon[i].aggiungiMossa(m);
-                        m = new Mossa("Ipnosi", "Psico", 0, 20);
-                        pokemon[i].aggiungiMossa(m);
+                        Xdoc.Load("../../../Content/Poliwhirl.xml");
+                        //                               Mosse         Mossa singola
+                        nodoMosse = Xdoc.DocumentElement.ChildNodes[6].ChildNodes[0];
+
+                        for (int ii = 0; ii < nodoMosse.ChildNodes.Count; ii++)
+                        {
+                            nodoMosse = Xdoc.DocumentElement.ChildNodes[6].ChildNodes[ii];
+                            pokemon[i].aggiungiMossa(new Mossa(nodoMosse.ChildNodes[0].InnerText, nodoMosse.ChildNodes[1].InnerText, Convert.ToInt32(nodoMosse.ChildNodes[2].InnerText), Convert.ToInt32(nodoMosse.ChildNodes[3].InnerText)));
+                        }
                         break;
                 }
 

@@ -262,7 +262,7 @@ namespace BattagliaPokemon
                                         _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Gray);
                                         _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1,330),Color.Black);
                                     }
-                                    else if (allpokemon[i].mosse[j].tipo == "Fouco")
+                                    else if (allpokemon[i].mosse[j].tipo == "Fuoco")
                                     {
                                         _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Orange);
                                         _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 330), Color.Black);
