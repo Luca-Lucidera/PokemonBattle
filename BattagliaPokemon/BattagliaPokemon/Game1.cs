@@ -105,9 +105,9 @@ namespace BattagliaPokemon
 
             var mouseState = Mouse.GetState(); //vado a prendere lo stato del mouse
             Vector2 mousePosition = new Vector2(mouseState.X, mouseState.Y); //vado a prendere la posizione del mouse
-
+            Console.WriteLine(String.Format("X:{0} Y:{1}", mouseState.X, mouseState.Y));
             //INIZIO DELLA GAME LOGIC
-            
+
             if (gameLogic.Equals("gameStart"))//schermata iniziale
             {
                 if (mouseState.LeftButton == ButtonState.Pressed) //controllo se il mouse ha premuto il tasto sinistro
@@ -171,27 +171,83 @@ namespace BattagliaPokemon
             {
                 if (mouseState.LeftButton == ButtonState.Pressed)
                 {
-                    if(battleLogic == "")
+                    if(battleLogic.Equals(""))
                     {
-                        if (mousePosition.X >= 182 && mousePosition.X <= 182 + 190 && mouseState.Y >= 328 && mouseState.Y <= 328 + 60)
+                        if (mousePosition.X >= 182 && mousePosition.X <= 182 + 190 && mousePosition.Y >= 328 && mousePosition.Y <= 328 + 60)
                         {
                             battleLogic = "Zaino";
                         }
-                        else if (mousePosition.X >= 423 && mousePosition.X <= 423 + 190 && mouseState.Y >= 328 && mouseState.Y <= 328 + 60)
+                        else if (mousePosition.X >= 423 && mousePosition.X <= 423 + 190 && mousePosition.Y >= 328 && mousePosition.Y <= 328 + 60)
                         {
                             battleLogic = "Attacca";
                         }
-                        else if (mousePosition.X >= 182 && mousePosition.X <= 182 + 190 && mouseState.Y >= 398 && mouseState.Y <= 398 + 60)
+                        else if (mousePosition.X >= 182 && mousePosition.X <= 182 + 190 && mousePosition.Y >= 398 && mousePosition.Y <= 398 + 60)
                         {
                             battleLogic = "Fuga";
                         }
-                        else if (mousePosition.X >= 423 && mousePosition.X <= 423 + 190 && mouseState.Y >= 398 && mouseState.Y <= 398 + 60)
+                        else if (mousePosition.X >= 423 && mousePosition.X <= 423 + 190 && mousePosition.Y >= 398 && mousePosition.Y <= 398 + 60)
                         {
                             battleLogic = "Cambia";
                         }
                     }
+                    else
+                    {
+                        if (battleLogic.Equals("Attacca"))
+                        {
+                            if (mousePosition.X >= 21 && mousePosition.X <= 21 + 136 && mousePosition.Y >= 398 && mousePosition.Y <= 398 + 60) //bottone schermata attacca
+                            {
+                                battleLogic = "";
+                            }
+                            //da qui inserire la logica per gestire la fase a turni tra peer 1 e peer 2
+                            Pokemon mioPokemonTMP = new Pokemon();
+                            Pokemon[] tmp = allPokemon.getPokemon();
+                            Mossa mossaScelta = new Mossa();
+                            for (int i = 0; i < allPokemon.getPokemon().Length; i++)
+                            {
+                                if (strMioPokemon.Equals(tmp[i].nome))
+                                {
+                                    mioPokemon = tmp[i];
+                                    break;
+                                }
+                            }
+                            if (mousePosition.X >= 182 && mousePosition.X <= 182 + 190 && mousePosition.Y >= 328 && mousePosition.Y <= 328 + 60)
+                            {
+                                mossaScelta = mioPokemon.mosse[0];
+                            }
+                            else if (mousePosition.X >= 423 && mousePosition.X <= 423 + 190 && mousePosition.Y >= 328 && mousePosition.Y <= 328 + 60)
+                            {
+                                mossaScelta = mioPokemon.mosse[1];
+                            }
+                            else if (mousePosition.X >= 182 && mousePosition.X <= 182 + 190 && mousePosition.Y >= 398 && mousePosition.Y <= 398 + 60)
+                            {
+                                mossaScelta = mioPokemon.mosse[2];
+                            }
+                            else if (mousePosition.X >= 423 && mousePosition.X <= 423 + 190 && mousePosition.Y >= 398 && mousePosition.Y <= 398 + 60)
+                            {
+                                mossaScelta = mioPokemon.mosse[3];
+                            }
+                            Console.WriteLine("Mossa scelta: " + mossaScelta.ToString());
+                            
+                            /* DA QUI INSERIRE LA LOGICA TCP PER I TURNI */
+                        }
+                        else if (battleLogic.Equals("Zaino"))
+                        {
+
+                        }
+                        else if (battleLogic.Equals("Cambia"))
+                        {
+
+                        }
+                        else if (battleLogic.Equals("Fuga"))
+                        {
+
+                        }
+
+                       
+                    }
                     
                 }
+                
             }
             base.Update(gameTime);
         }
@@ -202,6 +258,9 @@ namespace BattagliaPokemon
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
+            var mouseState = Mouse.GetState();
+            string debug = String.Format("X:{0} Y:{1} GameLogic: {2} BattleLogic: {3}", mouseState.X, mouseState.Y,gameLogic,battleLogic);
+
             if (gameLogic.Equals("gameStart"))
             {
                 _spriteBatch.Draw(personaggio, new Vector2(0, 0), Color.White);
@@ -235,7 +294,9 @@ namespace BattagliaPokemon
                 else if (battleLogic.Equals("Attacca"))
                 {
                     Texture2D rettMossa = new Texture2D(GraphicsDevice, 1, 1);
+                    Texture2D rettGoBack = new Texture2D(GraphicsDevice, 1, 1);
                     rettMossa.SetData(new[] { Color.White });
+                    rettGoBack.SetData(new[] { Color.White });
                     Pokemon[] allpokemon = allPokemon.getPokemon();
                     for (int i = 0; i < allpokemon.Length; i++)
                     {
@@ -250,38 +311,95 @@ namespace BattagliaPokemon
                             _spriteBatch.Draw(allpokemon[i].retro, new Vector2(200, 200), Color.White);
                             _spriteBatch.DrawString(generalFont, allpokemon[i].nome, new Vector2(270, 200), Color.Black);
                             _spriteBatch.DrawString(generalFont, "Vita: " + Convert.ToString(allpokemon[i].vita), new Vector2(270, 220), Color.Black);
-
+                            _spriteBatch.Draw(rettGoBack, new Rectangle(21, 398, 136, 60), Color.Red); //disegno il bottone per tornare alla schermata pricipale 
+                            _spriteBatch.DrawString(generalFont, "torna indietro", new Vector2(25, 402), Color.Black);
                             int xAdder1 = 0;
                             int xAdder2 = 0;
+                            //for per disegnare i rettangoli delle mosse
                             for (int j = 0; j < allpokemon[i].mosse.Length; j++)
                             {
-                                if(j < 2)
+                                if(j < 2) //new Rectangle(182 + xAdder1, 328, 190, 60)
                                 {
                                     if (allpokemon[i].mosse[j].tipo == "Normale")
                                     {
                                         _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Gray);
-                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1,330),Color.Black);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
                                     }
                                     else if (allpokemon[i].mosse[j].tipo == "Fuoco")
                                     {
                                         _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Orange);
-                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 330), Color.Black);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
                                     }
                                     else if (allpokemon[i].mosse[j].tipo == "Erba")
                                     {
                                         _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Green);
-                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 330), Color.Black);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
                                     }
                                     else if (allpokemon[i].mosse[j].tipo == "Psico")
                                     {
-                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Purple);
-                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 330), Color.Black);
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.LightPink);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
 
                                     }
                                     else if (allpokemon[i].mosse[j].tipo == "Acqua")
                                     {
                                         _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Blue);
-                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 330), Color.Black);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Ghiaccio")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.DeepSkyBlue);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Drago")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Brown);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Buio")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Black);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.White);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Lotta")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Brown);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Volante")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.AliceBlue);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Veleno")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Purple);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Terra")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.SandyBrown);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Roccia")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.RosyBrown);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Spettro")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Purple);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Acciaio")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.DarkGray);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Coleottero")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.LightGreen);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
                                     }
                                     xAdder1 = 241;
                                 }
@@ -292,7 +410,7 @@ namespace BattagliaPokemon
                                         _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Gray);
                                         _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
                                     }
-                                    else if (allpokemon[i].mosse[j].tipo == "Fouco")
+                                    else if (allpokemon[i].mosse[j].tipo == "Fuoco")
                                     {
                                         _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Orange);
                                         _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
@@ -304,7 +422,7 @@ namespace BattagliaPokemon
                                     }
                                     else if (allpokemon[i].mosse[j].tipo == "Psico")
                                     {
-                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Purple);
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.LightPink);
                                         _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
 
                                     }
@@ -313,13 +431,66 @@ namespace BattagliaPokemon
                                         _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Blue);
                                         _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
                                     }
+                                    else if (allpokemon[i].mosse[j].tipo == "Ghiaccio")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.DeepSkyBlue);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Drago")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Brown);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Buio")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Black);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.White);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Lotta")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Brown);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Volante")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.AliceBlue);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Veleno")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Purple);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Terra")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.SandyBrown);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Roccia")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.RosyBrown);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Spettro")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Purple);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Acciaio")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.DarkGray);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                    }
+                                    else if (allpokemon[i].mosse[j].tipo == "Coleottero")
+                                    {
+                                        _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.LightGreen);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                    }
                                     xAdder2 = 241;
                                 }
                             }
                         }
                     }
-                    
-                    
                 }
                 else if (battleLogic.Equals("Fuga"))
                 {
@@ -351,6 +522,7 @@ namespace BattagliaPokemon
                 }
                 
             }
+            _spriteBatch.DrawString(generalFont, debug, new Vector2(0, _graphics.PreferredBackBufferHeight - 25), Color.Black);
             _spriteBatch.End();
             base.Draw(gameTime);
         }

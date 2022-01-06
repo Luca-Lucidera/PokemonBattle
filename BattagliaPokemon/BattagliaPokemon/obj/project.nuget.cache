@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "0yHwoLoI5w3SaoVqrD/jvPVdfwgtjKqAqkahlzS8pp/xKSMfte/ea5gzvRZiw0l1Z1MfSqwsNFcJ7vcjGndoAg==",
+  "dgSpecHash": "FReYiFaAa3qNSghAsNVeXUbFr4BEE0gfqU6miqrYER0/ce3kLo/ZybAuc0iyQmo2vkS+ZiEXtk//J3LYfVrGfA==",
   "success": true,
-  "projectFilePath": "C:\\Desktop\\SCOLA\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon.csproj",
+  "projectFilePath": "D:\\Scuola\\GITHUB\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\simon\\.nuget\\packages\\monogame.content.builder.task\\3.8.0.1641\\monogame.content.builder.task.3.8.0.1641.nupkg.sha512",
-    "C:\\Users\\simon\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.0.1641\\monogame.framework.desktopgl.3.8.0.1641.nupkg.sha512"
+    "C:\\Users\\lucid\\.nuget\\packages\\monogame.content.builder.task\\3.8.0.1641\\monogame.content.builder.task.3.8.0.1641.nupkg.sha512",
+    "C:\\Users\\lucid\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.0.1641\\monogame.framework.desktopgl.3.8.0.1641.nupkg.sha512"
   ],
   "logs": []
 }
