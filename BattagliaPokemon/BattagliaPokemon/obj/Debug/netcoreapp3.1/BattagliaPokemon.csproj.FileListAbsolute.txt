@@ -131,3 +131,11 @@ D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netco
 D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\pidgeotRetro.xnb
 D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\pikachuRetro.xnb
 D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\raticateRetro.xnb
+C:\Desktop\SCOLA\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Front\nidokingFront.xnb
+C:\Desktop\SCOLA\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Front\pidgeotFront.xnb
+C:\Desktop\SCOLA\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Front\pikachuFront.xnb
+C:\Desktop\SCOLA\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Front\raticateFront.xnb
+C:\Desktop\SCOLA\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\nidokingRetro.xnb
+C:\Desktop\SCOLA\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\pidgeotRetro.xnb
+C:\Desktop\SCOLA\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\pikachuRetro.xnb
+C:\Desktop\SCOLA\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\raticateRetro.xnb
