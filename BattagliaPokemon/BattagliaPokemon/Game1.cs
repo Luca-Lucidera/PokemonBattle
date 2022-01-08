@@ -242,7 +242,16 @@ namespace BattagliaPokemon
                         }
                         else if (battleLogic.Equals("Cambia"))
                         {
-
+                            if(mouseState.LeftButton == ButtonState.Pressed)
+                            {
+                                var pokemonSelezionato = mieiPokemon.cambiaPokemon(mouseState);
+                                if (pokemonSelezionato != null)
+                                {
+                                    strMioPokemon = pokemonSelezionato.nome;
+                                    battleLogic = "";
+                                    /*DA QUI INSERIRE LA CONNESSIONE TCP DOVE INVIARE LE INFORMAZIONI AL SECONDO PEER*/
+                                }
+                            }
                         }
                         else if (battleLogic.Equals("Fuga"))
                         {
@@ -499,7 +508,17 @@ namespace BattagliaPokemon
                 }
                 else if (battleLogic.Equals("Cambia"))
                 {
-
+                    int tmpX = 0;
+                    for (int i = 0; i < mieiPokemon.getNumeroPokemonScelti(); i++)
+                    {
+                        Pokemon tmp = mieiPokemon.getPokemonByPos(i);
+                        _spriteBatch.Draw(tmp.front,
+                                          new Vector2(tmpX,0),
+                                          Color.White);
+                        tmp.posizione = new Vector2(tmpX,0); //vado a cambiare la posizione che ha il pokemon 
+                        _spriteBatch.DrawString(generalFont, tmp.nome, new Vector2(tmpX, 90), Color.Black);
+                        tmpX += 105;
+                    }
                 }
                 else //esegue se non c'è una battleLogic (eseguita almeno una volta 
                 {
@@ -600,11 +619,14 @@ namespace BattagliaPokemon
                         sw.Flush();
                     }
                 }
-
-
             }
             sw.Close();
             sr.Close();
         }
     }
 }
+
+
+
+
+                    

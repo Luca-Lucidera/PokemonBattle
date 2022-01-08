@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,6 +33,20 @@ namespace BattagliaPokemon
         public int getNumeroPokemonScelti()
         {
             return pokemonScelti.Count;
+        }
+
+        public Pokemon cambiaPokemon(MouseState mouseState)
+        {
+            int xAdder = 0;
+            for (int i = 0; i < pokemonScelti.Count; i++)
+            {
+                if (mouseState.X >= pokemonScelti.ElementAt(i).posizione.X &&
+                    mouseState.X <= pokemonScelti.ElementAt(i).posizione.X + 65 &&
+                    mouseState.Y >= pokemonScelti.ElementAt(i).posizione.Y &&
+                    mouseState.Y <= pokemonScelti.ElementAt(i).posizione.Y + 65)
+                    return pokemonScelti.ElementAt(i);
+            }
+            return null;
         }
     }
 }
