@@ -113,21 +113,27 @@ namespace BattagliaPokemon
                 if (mouseState.LeftButton == ButtonState.Pressed) //controllo se il mouse ha premuto il tasto sinistro
                     if (!nome.Equals("")) //controllo che il nome non sia vuoto
                         if ((mousePosition.X >= 325 && mousePosition.X <= 325 + 150) && (mousePosition.Y >= 410 && mousePosition.Y <= 410 + 25)) //controllo se ha premuto il pulsante
+                        {
                             gameLogic = "sceltaPokemon";
+                            Thread.Sleep(100);
+                        }
             }
             else if (gameLogic.Equals("sceltaPokemon")) //schermata scelta del pokemon
             {
                 if (mouseState.LeftButton == ButtonState.Pressed)//controllo se il mouse ha premuto il tasto sinistro
                 {
                     var tmp = allPokemon.CheckPokemonPremuto(mousePosition);//vado a vedere se il pokemon è stato premuto 
-                    if (tmp != null) //controllo che il risultato non sia nullo
+                    if (tmp != null &&  mieiPokemon.getNumeroPokemonScelti() < 6) //controllo che il risultato non sia nullo
                         mieiPokemon.addPokemon(tmp);//aggiungo il pokemon scelto alla classe mieiPokemon
 
                     //blocco per proseguire alla prossima schemrata
                     if (mouseState.LeftButton == ButtonState.Pressed)//controllo se è stato premuto il tasto sinistro
                         if (!mieiPokemon.showAll().Equals(""))//controllo che ci sia almeno un pokemon nella mia selezione, in base allo showAll
                             if ((mousePosition.X >= 250 && mousePosition.X <= 250 + 252) && (mousePosition.Y >= 350 && mousePosition.Y <= 350 + 91))//controllo che sia stato premuto nella posizione corretta
+                            {
                                 gameLogic = "ipSelection";
+                                Thread.Sleep(100);
+                            }
                 }
             }
             else if (gameLogic.Equals("ipSelection")) //schermata della selezione ip
@@ -266,13 +272,11 @@ namespace BattagliaPokemon
             {
                 Pokemon[] allpokemon = allPokemon.getPokemon();
                 int space = 0;
-                int lastX = 0;
+                //int lastX = 0;
                 for (int i = 0; i < allpokemon.Length; i++)
                 {
-                    _spriteBatch.Draw(allpokemon[i].front, new Vector2(allpokemon[i].posizione.X + space, allpokemon[i].posizione.Y), Color.White);
-                    _spriteBatch.DrawString(generalFont, allpokemon[i].nome, new Vector2(allpokemon[i].posizione.X + space, allpokemon[i].posizione.Y + 90), Color.Black);
-                    space += 40;
-                    lastX = Convert.ToInt32(allpokemon[i].posizione.X);
+                    _spriteBatch.Draw(allpokemon[i].front, new Vector2(allpokemon[i].posizione.X, allpokemon[i].posizione.Y), Color.White);
+                    _spriteBatch.DrawString(generalFont, allpokemon[i].nome, new Vector2(allpokemon[i].posizione.X, allpokemon[i].posizione.Y + 90), Color.Black);
                 }
                 _spriteBatch.DrawString(generalFont, "hai selezionato: " + mieiPokemon.showAll(), new Vector2(0, 200), Color.Black);
                 _spriteBatch.Draw(confirmButton, new Vector2(250, 350), Color.White);

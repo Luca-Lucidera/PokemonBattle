@@ -7,27 +7,31 @@ namespace BattagliaPokemon
 {
     class PokemonScelti
     {
-        private List<Pokemon> ps;
+        private List<Pokemon> pokemonScelti;
         public PokemonScelti()
         {
-            ps = new List<Pokemon>();
+            pokemonScelti = new List<Pokemon>();
         }
         public void addPokemon(Pokemon pokemon)
         {
-            if (!ps.Contains(pokemon))
-                ps.Add(pokemon);
+            if (!pokemonScelti.Contains(pokemon))
+                pokemonScelti.Add(pokemon);
         }
         public string showAll()
         {
             string s = string.Empty;
-            for (int i = 0; i < ps.Count; i++)
-                s += ps.ElementAt(i).nome + " ";
+            for (int i = 0; i < pokemonScelti.Count; i++)
+                s += pokemonScelti.ElementAt(i).nome + " ";
             return s;
         }
 
         public Pokemon getPokemonByPos(int index)
         {
-            return ps.ElementAt(index);
+            return pokemonScelti.ElementAt(index);
+        }
+        public int getNumeroPokemonScelti()
+        {
+            return pokemonScelti.Count;
         }
     }
 }

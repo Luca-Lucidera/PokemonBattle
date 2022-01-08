@@ -12,9 +12,10 @@ namespace BattagliaPokemon
     class AllPokemon
     {
         private Pokemon[] pokemon;
-
-        const int Xadder = 65; //aggiungo uno spazio di 65 pixel da un immagine ad un altra (praticamente saranno attaccate le immagini) 
-        const int Yadder = 65; //stesso discorso per l'asse Y
+        const int LengthXimgPokemon = 65;
+        const int LengthYimgPokemon = 65;
+        const int Xadder = 105; //aggiungo uno spazio di 65 pixel da un immagine ad un altra (praticamente saranno attaccate le immagini) 
+        const int Yadder = 105; //stesso discorso per l'asse Y
         public AllPokemon(Game1 g, GraphicsDeviceManager graphics)
         {
             //OGNI POKEMON È 65*65px
@@ -89,6 +90,51 @@ namespace BattagliaPokemon
                             pokemon[i].aggiungiMossa(new Mossa(nodoMosse.ChildNodes[0].InnerText, nodoMosse.ChildNodes[1].InnerText, Convert.ToInt32(nodoMosse.ChildNodes[2].InnerText), Convert.ToInt32(nodoMosse.ChildNodes[3].InnerText)));
                         }
                         break;
+                    case ("nidoking"):
+                        Xdoc.Load("../../../Content/nidoking.xml");
+                        //                               Mosse         Mossa singola
+                        nodoMosse = Xdoc.DocumentElement.ChildNodes[6].ChildNodes[0];
+
+                        for (int ii = 0; ii < nodoMosse.ChildNodes.Count; ii++)
+                        {
+                            nodoMosse = Xdoc.DocumentElement.ChildNodes[6].ChildNodes[ii];
+                            pokemon[i].aggiungiMossa(new Mossa(nodoMosse.ChildNodes[0].InnerText, nodoMosse.ChildNodes[1].InnerText, Convert.ToInt32(nodoMosse.ChildNodes[2].InnerText), Convert.ToInt32(nodoMosse.ChildNodes[3].InnerText)));
+                        }
+                        break;
+                    case ("pidgeot"):
+                        Xdoc.Load("../../../Content/pidgeot.xml");
+                        //                               Mosse         Mossa singola
+                        nodoMosse = Xdoc.DocumentElement.ChildNodes[6].ChildNodes[0];
+
+                        for (int ii = 0; ii < nodoMosse.ChildNodes.Count; ii++)
+                        {
+                            nodoMosse = Xdoc.DocumentElement.ChildNodes[6].ChildNodes[ii];
+                            pokemon[i].aggiungiMossa(new Mossa(nodoMosse.ChildNodes[0].InnerText, nodoMosse.ChildNodes[1].InnerText, Convert.ToInt32(nodoMosse.ChildNodes[2].InnerText), Convert.ToInt32(nodoMosse.ChildNodes[3].InnerText)));
+                        }
+                        break;
+                    case ("pikachu"):
+                        Xdoc.Load("../../../Content/pikachu.xml");
+                        //                               Mosse         Mossa singola
+                        nodoMosse = Xdoc.DocumentElement.ChildNodes[6].ChildNodes[0];
+
+                        for (int ii = 0; ii < nodoMosse.ChildNodes.Count; ii++)
+                        {
+                            nodoMosse = Xdoc.DocumentElement.ChildNodes[6].ChildNodes[ii];
+                            pokemon[i].aggiungiMossa(new Mossa(nodoMosse.ChildNodes[0].InnerText, nodoMosse.ChildNodes[1].InnerText, Convert.ToInt32(nodoMosse.ChildNodes[2].InnerText), Convert.ToInt32(nodoMosse.ChildNodes[3].InnerText)));
+                        }
+                        break;
+
+                    case ("raticate"):
+                        Xdoc.Load("../../../Content/raticate.xml");
+                        //                               Mosse         Mossa singola
+                        nodoMosse = Xdoc.DocumentElement.ChildNodes[6].ChildNodes[0];
+
+                        for (int ii = 0; ii < nodoMosse.ChildNodes.Count; ii++)
+                        {
+                            nodoMosse = Xdoc.DocumentElement.ChildNodes[6].ChildNodes[ii];
+                            pokemon[i].aggiungiMossa(new Mossa(nodoMosse.ChildNodes[0].InnerText, nodoMosse.ChildNodes[1].InnerText, Convert.ToInt32(nodoMosse.ChildNodes[2].InnerText), Convert.ToInt32(nodoMosse.ChildNodes[3].InnerText)));
+                        }
+                        break;
                 }
 
                 if(graphics.PreferredBackBufferWidth <= x) //vado a vedere se la l'asse X ha superato l'asse X allora scala in altezza
@@ -106,17 +152,17 @@ namespace BattagliaPokemon
         }
         public Pokemon CheckPokemonPremuto(Vector2 posizionePresa)
         {
-            int lastX = 0;
+            
             for (int i = 0; i < pokemon.Length; i++)
-            {
-                //                                         posizione inzia deve essere minore della sua posizione + la sua lunghezza + l'adder
-                if((posizionePresa.X >= pokemon[i].posizione.X + lastX )  && (posizionePresa.X <= pokemon[i].posizione.X + Xadder + lastX))
+            { 
+                
+                if((posizionePresa.X >= pokemon[i].posizione.X)  && (posizionePresa.X <= pokemon[i].posizione.X + LengthXimgPokemon))
                 {
-                    if (posizionePresa.Y >= pokemon[i].posizione.Y && posizionePresa.Y <= pokemon[i].posizione.Y + Yadder)
+                    if (posizionePresa.Y >= pokemon[i].posizione.Y && posizionePresa.Y <= pokemon[i].posizione.Y + LengthYimgPokemon)
                         return pokemon[i];
                 }
-                lastX = Convert.ToInt32(pokemon[i].posizione.X) + 40;
             }
+            
             return null;
         }
     }
