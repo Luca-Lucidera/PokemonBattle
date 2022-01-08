@@ -123,3 +123,11 @@ C:\Desktop\SCOLA\PokemonBattle\BattagliaPokemon\BattagliaPokemon\obj\Debug\netco
 C:\Desktop\SCOLA\PokemonBattle\BattagliaPokemon\BattagliaPokemon\obj\Debug\netcoreapp3.1\BattagliaPokemon.dll
 C:\Desktop\SCOLA\PokemonBattle\BattagliaPokemon\BattagliaPokemon\obj\Debug\netcoreapp3.1\BattagliaPokemon.pdb
 C:\Desktop\SCOLA\PokemonBattle\BattagliaPokemon\BattagliaPokemon\obj\Debug\netcoreapp3.1\BattagliaPokemon.genruntimeconfig.cache
+D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Front\nidokingFront.xnb
+D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Front\pidgeotFront.xnb
+D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Front\pikachuFront.xnb
+D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Front\raticateFront.xnb
+D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\nidokingRetro.xnb
+D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\pidgeotRetro.xnb
+D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\pikachuRetro.xnb
+D:\Scuola\GITHUB\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\raticateRetro.xnb

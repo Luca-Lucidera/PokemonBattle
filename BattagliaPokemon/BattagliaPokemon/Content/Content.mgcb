@@ -80,6 +80,42 @@
 /processorParam:TextureFormat=Color
 /build:Pokemon/Front/CharmanderFront.png
 
+#begin Pokemon/Front/nidokingFront.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Pokemon/Front/nidokingFront.png
+
+#begin Pokemon/Front/pidgeotFront.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Pokemon/Front/pidgeotFront.png
+
+#begin Pokemon/Front/pikachuFront.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Pokemon/Front/pikachuFront.png
+
 #begin Pokemon/Front/poliwhirlFront.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -91,6 +127,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Pokemon/Front/poliwhirlFront.png
+
+#begin Pokemon/Front/raticateFront.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Pokemon/Front/raticateFront.png
 
 #begin Pokemon/Retro/BulbasaurRetro.png
 /importer:TextureImporter
@@ -116,6 +164,42 @@
 /processorParam:TextureFormat=Color
 /build:Pokemon/Retro/CharmanderRetro.png
 
+#begin Pokemon/Retro/nidokingRetro.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Pokemon/Retro/nidokingRetro.png
+
+#begin Pokemon/Retro/pidgeotRetro.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Pokemon/Retro/pidgeotRetro.png
+
+#begin Pokemon/Retro/pikachuRetro.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Pokemon/Retro/pikachuRetro.png
+
 #begin Pokemon/Retro/poliwhirlRetro.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -127,6 +211,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Pokemon/Retro/poliwhirlRetro.png
+
+#begin Pokemon/Retro/raticateRetro.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Pokemon/Retro/raticateRetro.png
 
 #begin sceltaNomeD1.png
 /importer:TextureImporter

@@ -17,7 +17,7 @@ namespace BattagliaPokemon
 
         //font per disegnare
         private SpriteFont generalFont;
-        
+
         //texture da disegnare
         private Texture2D personaggio; // 96 x 104 px
         private Texture2D confirmButton; // 252 x 91 px
@@ -80,7 +80,7 @@ namespace BattagliaPokemon
 
             //creo oggetto mio pokemon
             mieiPokemon = new PokemonScelti();
-            
+
             /*
              * per inserire delle texture nella classe all pokeon devo per forza passargli l'oggetto Game1 (this)
              * _graphics serve per andare a vedere la grandezza dello schermo, e quindi calcolare dove posizionare i pokemon
@@ -91,11 +91,11 @@ namespace BattagliaPokemon
 
             //nome del mio allenatore
             nome = "";
-            
+
             //stringhe temporanee da eliminare con delle classi
             strMioPokemon = "";
             strPokemonSceltoAvversario = "";
-            
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -114,7 +114,7 @@ namespace BattagliaPokemon
                     if (!nome.Equals("")) //controllo che il nome non sia vuoto
                         if ((mousePosition.X >= 325 && mousePosition.X <= 325 + 150) && (mousePosition.Y >= 410 && mousePosition.Y <= 410 + 25)) //controllo se ha premuto il pulsante
                             gameLogic = "sceltaPokemon";
-            }  
+            }
             else if (gameLogic.Equals("sceltaPokemon")) //schermata scelta del pokemon
             {
                 if (mouseState.LeftButton == ButtonState.Pressed)//controllo se il mouse ha premuto il tasto sinistro
@@ -122,7 +122,7 @@ namespace BattagliaPokemon
                     var tmp = allPokemon.CheckPokemonPremuto(mousePosition);//vado a vedere se il pokemon è stato premuto 
                     if (tmp != null) //controllo che il risultato non sia nullo
                         mieiPokemon.addPokemon(tmp);//aggiungo il pokemon scelto alla classe mieiPokemon
-                    
+
                     //blocco per proseguire alla prossima schemrata
                     if (mouseState.LeftButton == ButtonState.Pressed)//controllo se è stato premuto il tasto sinistro
                         if (!mieiPokemon.showAll().Equals(""))//controllo che ci sia almeno un pokemon nella mia selezione, in base allo showAll
@@ -140,13 +140,13 @@ namespace BattagliaPokemon
 
                         myPeer = new TcpClient(); //creo l'oggetto myPeer che rappresenta il mio client
                         myPeer.Connect(ipAvversario, 42069); //provo a connettermi tramite il metodo connect, dandogli come input l'ip del secondo peer e la porta di ascolto
-                        
-                        string mioNomeDaMandare = "m;"+nome; //invio la m e il mio nome
-                        
+
+                        string mioNomeDaMandare = "m;" + nome; //invio la m e il mio nome
+
                         //prendo lo stream in lettura e scrittura del mio peer
-                        StreamWriter sw = new StreamWriter(myPeer.GetStream()); 
+                        StreamWriter sw = new StreamWriter(myPeer.GetStream());
                         StreamReader sr = new StreamReader(myPeer.GetStream());
-                        
+
                         //invio il mio nome con il relativo codice al secondo peer
                         sw.WriteLine(mioNomeDaMandare);
                         sw.Flush(); //svuoto il buffer
@@ -157,7 +157,7 @@ namespace BattagliaPokemon
 
 
                         //dopo aver ricevuto i pokemon dal secondo peer io gli invio il mio primo pokemon
-                        
+
                         sw.WriteLine(String.Format("s;{0}", strMioPokemon));
                         sw.Flush();
 
@@ -165,13 +165,16 @@ namespace BattagliaPokemon
                         sr.Close();
                         sr.Dispose();
                         gameLogic = "battle";
+                        Thread.Sleep(100);
                     }
+
             }
             else if (gameLogic.Equals("battle"))
             {
+
                 if (mouseState.LeftButton == ButtonState.Pressed)
                 {
-                    if(battleLogic.Equals(""))
+                    if (battleLogic.Equals(""))
                     {
                         if (mousePosition.X >= 182 && mousePosition.X <= 182 + 190 && mousePosition.Y >= 328 && mousePosition.Y <= 328 + 60)
                         {
@@ -192,43 +195,40 @@ namespace BattagliaPokemon
                     }
                     else
                     {
+                        Thread.Sleep(100);
                         if (battleLogic.Equals("Attacca"))
                         {
                             if (mousePosition.X >= 21 && mousePosition.X <= 21 + 136 && mousePosition.Y >= 398 && mousePosition.Y <= 398 + 60) //bottone schermata attacca
                             {
                                 battleLogic = "";
                             }
-                            //da qui inserire la logica per gestire la fase a turni tra peer 1 e peer 2
-                            Pokemon mioPokemonTMP = new Pokemon();
-                            Pokemon[] tmp = allPokemon.getPokemon();
-                            Mossa mossaScelta = new Mossa();
-                            for (int i = 0; i < allPokemon.getPokemon().Length; i++)
+                            else
                             {
-                                if (strMioPokemon.Equals(tmp[i].nome))
+                                //da qui inserire la logica per gestire la fase a turni tra peer 1 e peer 2
+                                Pokemon mioPokemonTMP = new Pokemon();
+                                Pokemon[] tmp = allPokemon.getPokemon();
+                                Mossa mossaScelta = new Mossa();
+                                for (int i = 0; i < allPokemon.getPokemon().Length; i++)
                                 {
-                                    mioPokemon = tmp[i];
-                                    break;
+                                    if (strMioPokemon.Equals(tmp[i].nome))
+                                    {
+                                        mioPokemon = tmp[i];
+                                        break;
+                                    }
                                 }
+                                if (mousePosition.X >= 182 && mousePosition.X <= 182 + 190 && mousePosition.Y >= 328 && mousePosition.Y <= 328 + 60)
+                                    mossaScelta = mioPokemon.mosse[0];
+                                else if (mousePosition.X >= 423 && mousePosition.X <= 423 + 190 && mousePosition.Y >= 328 && mousePosition.Y <= 328 + 60)
+                                    mossaScelta = mioPokemon.mosse[1];
+                                else if (mousePosition.X >= 182 && mousePosition.X <= 182 + 190 && mousePosition.Y >= 398 && mousePosition.Y <= 398 + 60)
+                                    mossaScelta = mioPokemon.mosse[2];
+                                else if (mousePosition.X >= 423 && mousePosition.X <= 423 + 190 && mousePosition.Y >= 398 && mousePosition.Y <= 398 + 60)
+                                    mossaScelta = mioPokemon.mosse[3];
+
+                                Console.WriteLine("Mossa scelta: " + mossaScelta.ToString());
+                                /* DA QUI INSERIRE LA LOGICA TCP PER I TURNI */
+
                             }
-                            if (mousePosition.X >= 182 && mousePosition.X <= 182 + 190 && mousePosition.Y >= 328 && mousePosition.Y <= 328 + 60)
-                            {
-                                mossaScelta = mioPokemon.mosse[0];
-                            }
-                            else if (mousePosition.X >= 423 && mousePosition.X <= 423 + 190 && mousePosition.Y >= 328 && mousePosition.Y <= 328 + 60)
-                            {
-                                mossaScelta = mioPokemon.mosse[1];
-                            }
-                            else if (mousePosition.X >= 182 && mousePosition.X <= 182 + 190 && mousePosition.Y >= 398 && mousePosition.Y <= 398 + 60)
-                            {
-                                mossaScelta = mioPokemon.mosse[2];
-                            }
-                            else if (mousePosition.X >= 423 && mousePosition.X <= 423 + 190 && mousePosition.Y >= 398 && mousePosition.Y <= 398 + 60)
-                            {
-                                mossaScelta = mioPokemon.mosse[3];
-                            }
-                            Console.WriteLine("Mossa scelta: " + mossaScelta.ToString());
-                            
-                            /* DA QUI INSERIRE LA LOGICA TCP PER I TURNI */
                         }
                         else if (battleLogic.Equals("Zaino"))
                         {
@@ -242,12 +242,8 @@ namespace BattagliaPokemon
                         {
 
                         }
-
-                       
                     }
-                    
                 }
-                
             }
             base.Update(gameTime);
         }
@@ -259,7 +255,7 @@ namespace BattagliaPokemon
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
             var mouseState = Mouse.GetState();
-            string debug = String.Format("X:{0} Y:{1} GameLogic: {2} BattleLogic: {3}", mouseState.X, mouseState.Y,gameLogic,battleLogic);
+            string debug = String.Format("X:{0} Y:{1} GameLogic: {2} BattleLogic: {3}", mouseState.X, mouseState.Y, gameLogic, battleLogic);
 
             if (gameLogic.Equals("gameStart"))
             {
@@ -288,7 +284,8 @@ namespace BattagliaPokemon
             }
             else if (gameLogic.Equals("battle"))
             {
-                if (battleLogic.Equals("Zaino")){
+                if (battleLogic.Equals("Zaino"))
+                {
 
                 }
                 else if (battleLogic.Equals("Attacca"))
@@ -318,7 +315,7 @@ namespace BattagliaPokemon
                             //for per disegnare i rettangoli delle mosse
                             for (int j = 0; j < allpokemon[i].mosse.Length; j++)
                             {
-                                if(j < 2) //new Rectangle(182 + xAdder1, 328, 190, 60)
+                                if (j < 2) //new Rectangle(182 + xAdder1, 328, 190, 60)
                                 {
                                     if (allpokemon[i].mosse[j].tipo == "Normale")
                                     {
@@ -344,7 +341,7 @@ namespace BattagliaPokemon
                                     else if (allpokemon[i].mosse[j].tipo == "Acqua")
                                     {
                                         _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Blue);
-                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.White);
                                     }
                                     else if (allpokemon[i].mosse[j].tipo == "Ghiaccio")
                                     {
@@ -429,7 +426,7 @@ namespace BattagliaPokemon
                                     else if (allpokemon[i].mosse[j].tipo == "Acqua")
                                     {
                                         _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Blue);
-                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                        _spriteBatch.DrawString(generalFont, allpokemon[i].mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.White);
                                     }
                                     else if (allpokemon[i].mosse[j].tipo == "Ghiaccio")
                                     {
@@ -520,13 +517,13 @@ namespace BattagliaPokemon
                         }
                     }
                 }
-                
+
             }
             _spriteBatch.DrawString(generalFont, debug, new Vector2(0, _graphics.PreferredBackBufferHeight - 25), Color.Black);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
-        
+
         //funzione per gestire l'input da tastiera
         private void TextInputHandler(object sender, TextInputEventArgs args)
         {
