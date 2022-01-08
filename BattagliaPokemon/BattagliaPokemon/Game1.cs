@@ -173,7 +173,7 @@ namespace BattagliaPokemon
 
                         //dopo aver ricevuto i pokemon dal secondo peer io gli invio il mio primo pokemon
 
-                        sw.WriteLine(String.Format("s;{0}", strMioPokemon));
+                        sw.WriteLine(mieiPokemon.getPokemonByPos(0).ToXML());
                         sw.Flush();
 
                         sw.Close();
@@ -604,8 +604,9 @@ namespace BattagliaPokemon
                 sw = new StreamWriter(secondPeer.GetStream());
                 sr = new StreamReader(secondPeer.GetStream());
 
-                XmlTextReader xtr = new XmlTextReader("..\\..\\protocollo di comunicazione finale(per ora).xml");
+                
                 String strClientInput = sr.ReadLine();
+                XmlTextReader xtr = new XmlTextReader(strClientInput);
                 if (strClientInput != null)
                 {
 
@@ -626,7 +627,10 @@ namespace BattagliaPokemon
                             }
                             else if (tmp == "s")
                             {
-
+                                xmlDoc.Load(strClientInput);
+                                nodoPokemon = xmlDoc.DocumentElement.ChildNodes[1];
+                                strPokemonSceltoAvversario = nodoPokemon.ChildNodes[0].InnerText + nodoPokemon.ChildNodes[2].InnerText+ Convert.ToInt32(nodoPokemon.ChildNodes[1].InnerText)+ this;
+                                gameLogic = "battle";
                             }
 
                             //NEL PEER 2 
