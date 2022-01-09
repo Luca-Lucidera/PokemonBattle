@@ -570,6 +570,8 @@ namespace BattagliaPokemon
                     "<danni>{2}</danni>" +
                     "</root>", mossaScelta.nome, mossaScelta.tipo, mossaScelta.danni);
 
+                    swFP = new StreamWriter(myPeer.GetStream());
+                    srFP = new StreamReader(myPeer.GetStream());
                     swFP.WriteLine(mossaDaMandare);
                     swFP.Flush();
 
@@ -590,7 +592,10 @@ namespace BattagliaPokemon
                        "</root>", pokemonAvversario.nome);
                             swFP.WriteLine(sconfittoDaMandare);
                             swFP.Flush();
+                            
                         }
+                        mioTurno = false;
+
                     }
                     else if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText) == 1)
                     {
@@ -603,7 +608,10 @@ namespace BattagliaPokemon
                        "</root>", pokemonAvversario.nome);
                             swFP.WriteLine(sconfittoDaMandare);
                             swFP.Flush();
+                            
                         }
+                        mioTurno = false;
+
                     }
                     else if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText) == 2)
                     {
@@ -616,7 +624,9 @@ namespace BattagliaPokemon
                        "</root>", pokemonAvversario.nome);
                             swFP.WriteLine(sconfittoDaMandare);
                             swFP.Flush();
+                            
                         }
+                        mioTurno = false;
                     }
                     else if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText) == 3)
                     {
@@ -629,7 +639,9 @@ namespace BattagliaPokemon
                        "</root>", pokemonAvversario.nome);
                             swFP.WriteLine(sconfittoDaMandare);
                             swFP.Flush();
+                            
                         }
+                        mioTurno = false;
                     }
                     else if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText) == 4)
                     {
@@ -642,7 +654,9 @@ namespace BattagliaPokemon
                        "</root>", pokemonAvversario.nome);
                             swFP.WriteLine(sconfittoDaMandare);
                             swFP.Flush();
+                            
                         }
+                        mioTurno = false;
                     }
 
 
@@ -750,6 +764,8 @@ namespace BattagliaPokemon
             StreamWriter sw;
             StreamReader sr;
             secondPeer = listener.AcceptTcpClient();
+            Socket s = secondPeer.Client;
+            myPeer.Connect(((IPEndPoint)s.RemoteEndPoint).Address, 42069);
             while (true)
             {
                 sw = new StreamWriter(secondPeer.GetStream());
