@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Desktop/SCOLA/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Retro/pikachuRetro.png</SourceFile>
-  <SourceTime>2022-01-08T14:53:45.7270347+01:00</SourceTime>
-  <DestFile>C:/Desktop/SCOLA/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/bin/DesktopGL/Content/Pokemon/Retro/pikachuRetro.xnb</DestFile>
-  <DestTime>2022-01-08T16:35:24.4788022+01:00</DestTime>
+  <SourceFile>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Retro/pikachuRetro.png</SourceFile>
+  <SourceTime>2022-01-08T14:33:32+01:00</SourceTime>
+  <DestFile>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/bin/DesktopGL/Content/Pokemon/Retro/pikachuRetro.xnb</DestFile>
+  <DestTime>2022-01-09T10:43:58.7793458+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2020-08-10T18:17:54+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

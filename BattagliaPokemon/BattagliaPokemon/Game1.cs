@@ -85,7 +85,7 @@ namespace BattagliaPokemon
 
             //creo oggetto mio pokemon
             mieiPokemon = new PokemonScelti();
-
+            xmlDoc = new XmlDocument();
             /*
              * per inserire delle texture nella classe all pokeon devo per forza passargli l'oggetto Game1 (this)
              * _graphics serve per andare a vedere la grandezza dello schermo, e quindi calcolare dove posizionare i pokemon
@@ -152,7 +152,10 @@ namespace BattagliaPokemon
                         myPeer = new TcpClient(); //creo l'oggetto myPeer che rappresenta il mio client
                         myPeer.Connect(ipAvversario, 42069); //provo a connettermi tramite il metodo connect, dandogli come input l'ip del secondo peer e la porta di ascolto
 
-                        string mioNomeDaMandare = "m;" + nome; //invio la m e il mio nome
+                        string mioNomeDaMandare = String.Format("<root>" +
+                            "<comando>m</comando>" +
+                            "<nome>{0}</nome>" +
+                            "</root>", nome); //invio la m e il mio nome
 
                         //prendo lo stream in lettura e scrittura del mio peer
                         StreamWriter sw = new StreamWriter(myPeer.GetStream());
@@ -167,9 +170,11 @@ namespace BattagliaPokemon
                         nomeAvversario = sr.ReadLine();
                         strPokemonSceltoAvversario = sr.ReadLine();
 
+
                         xmlDoc.LoadXml(strPokemonSceltoAvversario);
                         nodoPokemon = xmlDoc.DocumentElement.ChildNodes[1];
-                        pokemonAvversario = new Pokemon(nodoPokemon.ChildNodes[0].InnerText, nodoPokemon.ChildNodes[2].InnerText, Convert.ToInt32(nodoPokemon.ChildNodes[1].InnerText),this);
+                        pokemonAvversario = new Pokemon(nodoPokemon.ChildNodes[0].InnerText, nodoPokemon.ChildNodes[2].InnerText, Convert.ToInt32(nodoPokemon.ChildNodes[1].InnerText), this);
+
 
                         //dopo aver ricevuto i pokemon dal secondo peer io gli invio il mio primo pokemon
 
@@ -186,7 +191,6 @@ namespace BattagliaPokemon
             }
             else if (gameLogic.Equals("battle"))
             {
-
                 if (mouseState.LeftButton == ButtonState.Pressed)
                 {
                     if (battleLogic.Equals(""))
@@ -603,60 +607,74 @@ namespace BattagliaPokemon
             {
                 sw = new StreamWriter(secondPeer.GetStream());
                 sr = new StreamReader(secondPeer.GetStream());
+                string strClientInput = sr.ReadLine();
 
-                
-                String strClientInput = sr.ReadLine();
-                XmlTextReader xtr = new XmlTextReader(strClientInput);
                 if (strClientInput != null)
                 {
+                    xmlDoc.LoadXml(strClientInput);
 
-                    while (xtr.Read())
+                    if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "m")
                     {
-                        if (xtr.NodeType == XmlNodeType.Element && xtr.Name == "comando")
-                        {
-                            string tmp = xtr.ReadElementString();
-
-                            if (tmp == "m")
-                            {
-                                sw.WriteLine(nome);
-                                sw.Flush();
-                                //mioPokemon = mieiPokemon.getPokemonByPos(0);//da sostituire con l'xml
-                                sw.WriteLine(mioPokemon.ToXML());
-                                sw.Flush();
-
-                            }
-                            else if (tmp == "s")
-                            {
-                                xmlDoc.Load(strClientInput);
-                                nodoPokemon = xmlDoc.DocumentElement.ChildNodes[1];
-                                strPokemonSceltoAvversario = nodoPokemon.ChildNodes[0].InnerText + nodoPokemon.ChildNodes[2].InnerText+ Convert.ToInt32(nodoPokemon.ChildNodes[1].InnerText)+ this;
-                                gameLogic = "battle";
-                            }
-
-                            //NEL PEER 2 
-
-                        }
-                        /*else if ()  //peer 1 riceve i pokemon del peer 2 e quindi il peer 1 invia il suo pokemon
-                        {
-                            //strPokemonSceltoAvversario = strClientInput.Substring(2);
-                            gameLogic = "battle";
-                        }
-                        else if (strClientInput.StartsWith("a"))
-                        {
-                            string mioPokemon = "r;Charmander;150;1";
-                            sw.WriteLine(mioPokemon);
-                            sw.Flush();
-                        }*/
+                        sw.WriteLine(String.Format("<root>" +
+                        "<comando>m</comando>" +
+                        "<nome>{0}</nome>" +
+                        "</root>", nome));
+                        sw.Flush();
+                        sw.WriteLine(mieiPokemon.getPokemonByPos(0).ToXML());
+                        sw.Flush();
                     }
-                    sw.Close();
-                    sr.Close();
+                    else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "s")
+                    {
+                        pokemonAvversario = new Pokemon(nodoPokemon.ChildNodes[0].InnerText, nodoPokemon.ChildNodes[2].InnerText, Convert.ToInt32(nodoPokemon.ChildNodes[1].InnerText), this);
+                    }
+
                 }
             }
+            sw.Close();
+            sr.Close();
         }
     }
 }
 
 
+/*
+while (xtr.Read())
+{
+    if (xtr.NodeType == XmlNodeType.Element && xtr.Name == "comando")
+    {
+        string tmp = xtr.ReadElementString();
 
+        if (tmp == "m")
+        {
+            sw.WriteLine(nome);
+            sw.Flush();
+            //mioPokemon = mieiPokemon.getPokemonByPos(0);//da sostituire con l'xml
+            sw.WriteLine(mioPokemon.ToXML());
+            sw.Flush();
 
-                    
+        }
+        else if (tmp == "s")
+        {
+            xmlDoc.Load(strClientInput);
+            nodoPokemon = xmlDoc.DocumentElement.ChildNodes[1];
+            strPokemonSceltoAvversario = nodoPokemon.ChildNodes[0].InnerText + nodoPokemon.ChildNodes[2].InnerText+ Convert.ToInt32(nodoPokemon.ChildNodes[1].InnerText)+ this;
+            gameLogic = "battle";
+        }
+
+        //NEL PEER 2 
+
+    }
+
+   */
+
+/*else if ()  //peer 1 riceve i pokemon del peer 2 e quindi il peer 1 invia il suo pokemon
+{
+    //strPokemonSceltoAvversario = strClientInput.Substring(2);
+    gameLogic = "battle";
+}
+else if (strClientInput.StartsWith("a"))
+{
+    string mioPokemon = "r;Charmander;150;1";
+    sw.WriteLine(mioPokemon);
+    sw.Flush();
+}*/

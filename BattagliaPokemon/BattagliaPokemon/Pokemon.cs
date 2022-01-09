@@ -40,16 +40,10 @@ namespace BattagliaPokemon
         }
         public Pokemon(string nome, string tipo, int vita, Game g)
         {
-            string[] FilesFront = Directory.GetFiles("./Content/Pokemon/Front/"); //prendo il pathName di dove ho inserito il fronte dell'immagine del pokemon
-            string[] FilesRetro = Directory.GetFiles("./Content/Pokemon/Retro/"); //prendo il pathName di dove ho inserito il retro dell'immagine del pokemon
-
-            string tmp = Path.GetFileNameWithoutExtension("./Content/Pokemon/Front/");
-            int pos = tmp.IndexOf("Front");
-            tmp.Substring(0, pos); //per prendere il nome del pokemon devo prendere il nome del file ma senza la parola Front
             front = g.Content.Load<Texture2D>("Pokemon/Front/" + Path.GetFileNameWithoutExtension(String.Format("./Content/Pokemon/Front/{0}Front.png",nome))); //Vado a prendere l'immagine frontale del pokemon
             retro = g.Content.Load<Texture2D>("Pokemon/Retro/" + Path.GetFileNameWithoutExtension(String.Format("./Content/Pokemon/Retro/{0}Retro.png",nome))); //Vado a prendere l'immagine dle retro del pokemon
             this.nome = nome;
-            this.tipo = tipo;
+             this.tipo = tipo;
             this.vita = vita;
         }
 
@@ -65,8 +59,6 @@ namespace BattagliaPokemon
             }
         }
 
-
-
         public void aggiungiMosse(Mossa[] m)
         {
             mosse = m;
@@ -74,7 +66,16 @@ namespace BattagliaPokemon
 
         public string ToXML()
         {
-            return String.Format("<root>" + "<comando>s</comando>" + "<pokemon>" + "<nome>{0}</nome>" + "<vita>{1}</vita>" + "<tipo>{2}</tipo>" + "<status></status>" + "</pokemon>" + "</root>", nome, vita, tipo);
+            return String.Format(
+                "<root>" +
+                    "<comando>s</comando>" + 
+                    "<pokemon>" +
+                        "<nome>{0}</nome>" +
+                        "<vita>{1}</vita>" +
+                        "<tipo>{2}</tipo>" +
+                        "<status>status</status>" +
+                    "</pokemon>" + 
+                "</root>", nome, vita, tipo);
         }
     }
 }
