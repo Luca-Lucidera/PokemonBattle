@@ -28,13 +28,15 @@ namespace BattagliaPokemon
 
         public Pokemon getPokemonByPos(int index)
         {
-            return pokemonScelti.ElementAt(index);
+            if (index >= 0)
+                return pokemonScelti.ElementAt(index);
+            else return null;
         }
         public int getNumeroPokemonScelti()
         {
             return pokemonScelti.Count;
         }
-
+        
         public Pokemon cambiaPokemon(MouseState mouseState)
         {
             int xAdder = 0;
@@ -43,7 +45,8 @@ namespace BattagliaPokemon
                 if (mouseState.X >= pokemonScelti.ElementAt(i).posizione.X &&
                     mouseState.X <= pokemonScelti.ElementAt(i).posizione.X + 65 &&
                     mouseState.Y >= pokemonScelti.ElementAt(i).posizione.Y &&
-                    mouseState.Y <= pokemonScelti.ElementAt(i).posizione.Y + 65)
+                    mouseState.Y <= pokemonScelti.ElementAt(i).posizione.Y + 65 &&
+                    pokemonScelti.ElementAt(i).vita > 0)
                     return pokemonScelti.ElementAt(i);
             }
             return null;
