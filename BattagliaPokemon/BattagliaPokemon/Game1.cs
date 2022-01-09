@@ -39,6 +39,7 @@ namespace BattagliaPokemon
         private string gameLogic = "gameStart";
         private string battleLogic = "";
         private string ipAvversario = "";
+        private string messaggioTurno = "";
 
         //variabili temporanee da sostituire con classi
         string strMioPokemon;
@@ -233,9 +234,51 @@ namespace BattagliaPokemon
                                 else if (mousePosition.X >= 423 && mousePosition.X <= 423 + 190 && mousePosition.Y >= 398 && mousePosition.Y <= 398 + 60)
                                     mossaScelta = mioPokemon.mosse[3];
 
-                                Console.WriteLine("Mossa scelta: " + mossaScelta.ToString());
+                                //Console.WriteLine("Mossa scelta: " + mossaScelta.ToString());
                                 /* DA QUI INSERIRE LA LOGICA TCP PER I TURNI */
 
+                                myPeer = new TcpClient(); //creo l'oggetto myPeer che rappresenta il mio client
+                                myPeer.Connect(ipAvversario, 42069); //provo a connettermi tramite il metodo connect, dandogli come input l'ip del secondo peer e la porta di ascolto
+
+                                StreamWriter sw = new StreamWriter(myPeer.GetStream());
+                                StreamReader sr = new StreamReader(myPeer.GetStream());
+
+                                string mossaDaMandare = String.Format("<root>" +
+                                "<comando>a</comando>" +
+                                "<nomeMossa>{0}</nomeMossa>" +
+                                "<tipoMossa>{1}</tipoMossa>" +
+                                "<danni>{2}</danni>" +
+                                "</root>", mossaScelta.nome, mossaScelta.tipo, mossaScelta.danni);
+
+                                sw.WriteLine(mossaDaMandare);
+                                sw.Flush();
+
+                                strPokemonSceltoAvversario = sr.ReadLine();
+
+                                xmlDoc.LoadXml(strPokemonSceltoAvversario);
+                                
+                                pokemonAvversario.vita = Convert.ToInt32(xmlDoc.GetElementsByTagName("vitaRimanente")[0].InnerText);
+                                
+                                if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText) == 0)
+                                {
+                                    messaggioTurno = "danno normale";
+                                }
+                                else if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText)==1)
+                                {
+                                    messaggioTurno = "danno ridotto";
+                                }
+                                else if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText) == 1)
+                                {
+                                    messaggioTurno = "danno superefficace";
+                                }
+                                else if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText) == 1)
+                                {
+                                    messaggioTurno = "danno critico";
+                                }
+                                else if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText) == 1)
+                                {
+                                    messaggioTurno = "no danno";
+                                }
                             }
                         }
                         else if (battleLogic.Equals("Zaino"))
@@ -633,7 +676,47 @@ namespace BattagliaPokemon
                     {
                         pokemonAvversario = new Pokemon(nodoPokemon.ChildNodes[0].InnerText, nodoPokemon.ChildNodes[2].InnerText, Convert.ToInt32(nodoPokemon.ChildNodes[1].InnerText), this);
                     }
+                    else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "a")
+                    {
+                        string mossa = sr.ReadLine();
+                        xmlDoc.LoadXml(mossa);
+                        if ((mioPokemon.tipo == "Fuoco" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Terra" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Roccia" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Acqua")) ||
+                           (mioPokemon.tipo == "Acqua" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Erba" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Elettro")) ||
+                           (mioPokemon.tipo == "Erba" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Volante" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Veleno" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Coleottero" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Fuoco" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Ghiaccio")) ||
+                           (mioPokemon.tipo == "Elettro" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Terra")) ||
+                           (mioPokemon.tipo == "Terra" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Acqua" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Erba" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Ghiaccio")) ||
+                           (mioPokemon.tipo == "Volante" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Elettro" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Roccia" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Ghiaccio")) ||
+                           (mioPokemon.tipo == "Veleno" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Terra" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Pisco")) ||
+                           (mioPokemon.tipo == "Normale" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Lotta" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Psico" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Folletto")))
+                        {
+                            mioPokemon.vita = mioPokemon.vita - (Convert.ToInt32(xmlDoc.GetElementsByTagName("danni")[0].InnerText) * 2);
+                            string mossaDaMandare = String.Format("<root>" +
+                               "<comando>r</comando>" +
+                               "<vitaRimanente>{0}</vitaRimanente>" +
+                               "<moltiplicatore>{1}</moltiplicatore>" +
+                               "</root>", mioPokemon.vita, 2);
+                        }
+                    }
+                    else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "i")
+                    {
 
+                    }
+                    else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "f")
+                    {
+
+                    }
+                    else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "c")
+                    {
+
+                    }
+                    else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "l")
+                    {
+
+                    }
+                    else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "e")
+                    {
+                        sw.WriteLine(" ");
+                    }
                 }
             }
             sw.Close();
