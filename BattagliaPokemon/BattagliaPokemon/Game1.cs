@@ -41,7 +41,7 @@ namespace BattagliaPokemon
         private string battleLogic = "";
         private string ipAvversario = "";
         private string messaggioTurno = "";
-
+        private bool mioTurno = false;
         //variabili temporanee da sostituire con classi
         string strMioPokemon;
         string strPokemonSceltoAvversario;
@@ -426,6 +426,23 @@ namespace BattagliaPokemon
             }
             else if (gameLogic.Equals("battle"))
             {
+                if (mioTurno)
+                {
+                    eseguiTurno();
+                    mioTurno = false;
+                }
+                
+            }
+
+            _spriteBatch.DrawString(generalFont, debug, new Vector2(0, _graphics.PreferredBackBufferHeight - 25), Color.Black);
+            _spriteBatch.End();
+            base.Draw(gameTime);
+        }
+        private void eseguiTurno()
+        {
+            if (gameLogic.Equals("battle"))
+            {
+
                 if (battleLogic.Equals("Zaino"))
                 {
 
@@ -688,10 +705,6 @@ namespace BattagliaPokemon
 
                 }
             }
-
-            _spriteBatch.DrawString(generalFont, debug, new Vector2(0, _graphics.PreferredBackBufferHeight - 25), Color.Black);
-            _spriteBatch.End();
-            base.Draw(gameTime);
         }
 
         //funzione per gestire l'input da tastiera
@@ -784,6 +797,7 @@ namespace BattagliaPokemon
                                "</root>", mioPokemon.vita, 2);
                             sw.WriteLine(mossaDaMandare);
                             sw.Flush();
+                            mioTurno = true;
                         }
                         else
                         {
@@ -795,6 +809,7 @@ namespace BattagliaPokemon
                                "</root>", mioPokemon.vita, 0);
                             sw.WriteLine(mossaDaMandare);
                             sw.Flush();
+                            mioTurno = true;
                         }
                     }
                     else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "i")
@@ -802,11 +817,11 @@ namespace BattagliaPokemon
                         string oggetto = sr.ReadLine();
                         xmlDoc.LoadXml(oggetto);
                         pokemonAvversario.vita = Convert.ToInt32(xmlDoc.GetElementsByTagName("vitaAttuale")[0].InnerText);
-                        
+                        mioTurno = true;
                     }
                     else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "f")
                     {
-                        
+                        mioTurno = true;
                     }
                     else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "c")
                     {
