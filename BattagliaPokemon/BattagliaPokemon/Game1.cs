@@ -373,7 +373,7 @@ namespace BattagliaPokemon
                     {
                         if (j < 2) //new Rectangle(182 + xAdder1, 328, 190, 60)
                         {
-                            if (mioPokemon.tipo == "Normale")
+                            if (mioPokemon.mosse[j].tipo == "Normale")
                             {
                                 _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Gray);
                                 _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
@@ -452,6 +452,12 @@ namespace BattagliaPokemon
                             else if (mioPokemon.mosse[j].tipo == "Coleottero")
                             {
                                 _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.LightGreen);
+                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                            }
+                            else if (mioPokemon.mosse[j].tipo == "Elettro")
+                            {
+                                string nome = mioPokemon.mosse[j].nome;
+                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Yellow);
                                 _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
                             }
                             xAdder1 = 241;
@@ -539,6 +545,16 @@ namespace BattagliaPokemon
                                 _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.LightGreen);
                                 _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
                             }
+                            else if (mioPokemon.mosse[j].tipo == "Elettro")
+                            {
+                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Yellow);
+                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                            }
+                            else if (mioPokemon.mosse[j].tipo == "Drago")
+                            {
+                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.BlueViolet);
+                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                            }
                             xAdder2 = 241;
                         }
                     }
@@ -551,6 +567,7 @@ namespace BattagliaPokemon
                 else if (battleLogic.Equals("Cambia"))
                 {
                     int tmpX = 0;
+                    int posMioPokemon = -1;
                     for (int i = 0; i < mieiPokemon.getNumeroPokemonScelti(); i++)
                     {
                         Pokemon tmp = mieiPokemon.getPokemonByPos(i);
@@ -563,7 +580,12 @@ namespace BattagliaPokemon
                             _spriteBatch.DrawString(generalFont, tmp.nome, new Vector2(tmpX, 90), Color.Black);
                             tmpX += 105;
                         }
+                        else
+                        {
+                            posMioPokemon = i;
+                        }
                     }
+                    mieiPokemon.getPokemonByPos(posMioPokemon).posizione = new Vector2(-200, 0);//metto il pokemon che è in uso attualmente come posizione fouri dalla schermata di gioco => non premibile
                 }
                 else //esegue se non c'è una battleLogic (eseguita almeno una volta 
                 {
@@ -704,47 +726,3 @@ namespace BattagliaPokemon
         }
     }
 }
-
-
-
-/*
-while (xtr.Read())
-{
-    if (xtr.NodeType == XmlNodeType.Element && xtr.Name == "comando")
-    {
-        string tmp = xtr.ReadElementString();
-
-        if (tmp == "m")
-        {
-            sw.WriteLine(nome);
-            sw.Flush();
-            //mioPokemon = mieiPokemon.getPokemonByPos(0);//da sostituire con l'xml
-            sw.WriteLine(mioPokemon.ToXML());
-            sw.Flush();
-
-        }
-        else if (tmp == "s")
-        {
-            xmlDoc.Load(strClientInput);
-            nodoPokemon = xmlDoc.DocumentElement.ChildNodes[1];
-            strPokemonSceltoAvversario = nodoPokemon.ChildNodes[0].InnerText + nodoPokemon.ChildNodes[2].InnerText+ Convert.ToInt32(nodoPokemon.ChildNodes[1].InnerText)+ this;
-            gameLogic = "battle";
-        }
-
-        //NEL PEER 2 
-
-    }
-
-   */
-
-/*else if ()  //peer 1 riceve i pokemon del peer 2 e quindi il peer 1 invia il suo pokemon
-{
-    //strPokemonSceltoAvversario = strClientInput.Substring(2);
-    gameLogic = "battle";
-}
-else if (strClientInput.StartsWith("a"))
-{
-    string mioPokemon = "r;Charmander;150;1";
-    sw.WriteLine(mioPokemon);
-    sw.Flush();
-}*/
