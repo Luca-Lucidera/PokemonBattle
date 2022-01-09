@@ -94,7 +94,7 @@ namespace BattagliaPokemon
             allPokemon = new AllPokemon(this, _graphics);
             pokemonAvversario = new Pokemon();
             mioPokemon = new Pokemon();
-
+       
             //nome del mio allenatore
             nome = "";
 
@@ -148,7 +148,7 @@ namespace BattagliaPokemon
                     if (!ipAvversario.Equals("")) //controllo che l'ip non sia vuoto
                     {
                         //da eliminare
-                        strMioPokemon = mieiPokemon.getPokemonByPos(0).nome;
+                        mioPokemon = mieiPokemon.getPokemonByPos(0);
 
                         myPeer = new TcpClient(); //creo l'oggetto myPeer che rappresenta il mio client
                         myPeer.Connect(ipAvversario, 42069); //provo a connettermi tramite il metodo connect, dandogli come input l'ip del secondo peer e la porta di ascolto
@@ -303,6 +303,11 @@ namespace BattagliaPokemon
                             battleLogic = "";
                             /*qui inserire la logica tcp*/
                             gameLogic = "sceltaPokemon";
+
+                            //resetto tutto quello che avevo fatto
+                            pokemonAvversario = new Pokemon();
+                            mioPokemon = new Pokemon();
+                            mieiPokemon = new PokemonScelti();
                         }
                     }
                 }

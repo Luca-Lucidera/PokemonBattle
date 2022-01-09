@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Desktop/SCOLA/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/confButton.jpg</SourceFile>
-  <SourceTime>2021-12-26T17:38:05.2526402+01:00</SourceTime>
-  <DestFile>C:/Desktop/SCOLA/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/bin/DesktopGL/Content/confButton.xnb</DestFile>
-  <DestTime>2022-01-09T14:25:40.8361701+01:00</DestTime>
+  <SourceFile>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/confButton.jpg</SourceFile>
+  <SourceTime>2021-12-19T20:41:14.7357647+01:00</SourceTime>
+  <DestFile>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/bin/DesktopGL/Content/confButton.xnb</DestFile>
+  <DestTime>2022-01-09T15:45:20.893522+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2020-08-10T18:17:54+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
