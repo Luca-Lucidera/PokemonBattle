@@ -34,7 +34,7 @@ namespace BattagliaPokemon
         XmlDocument xmlDoc;
         XmlNode nodoPokemon;
 
-        private int c=0;
+        private int c = 0;
         private string nome;
         private string nomeAvversario;
         private string gameLogic = "gameStart";
@@ -165,7 +165,7 @@ namespace BattagliaPokemon
                             "<nome>{0}</nome>" +
                             "</root>", nome); //invio la m e il mio nome
 
-                       
+
 
                         //invio il mio nome con il relativo codice al secondo peer
                         swFP.WriteLine(mioNomeDaMandare);
@@ -188,6 +188,7 @@ namespace BattagliaPokemon
                         swFP.Flush();
 
                         gameLogic = "battle";
+                        mioTurno = true;
                         Thread.Sleep(100);
                     }
 
@@ -218,174 +219,8 @@ namespace BattagliaPokemon
                     else
                     {
                         Thread.Sleep(130);
-                        if (battleLogic.Equals("Attacca"))
-                        {
-                            if (mousePosition.X >= 21 && mousePosition.X <= 21 + 136 && mousePosition.Y >= 398 && mousePosition.Y <= 398 + 60) //bottone schermata attacca
-                            {
-                                battleLogic = "";
-                            }
-                            else
-                            {
-                                Mossa mossaScelta = new Mossa();
-                                if (mousePosition.X >= 182 && mousePosition.X <= 182 + 190 && mousePosition.Y >= 328 && mousePosition.Y <= 328 + 60)
-                                    mossaScelta = mioPokemon.mosse[0];
-                                else if (mousePosition.X >= 423 && mousePosition.X <= 423 + 190 && mousePosition.Y >= 328 && mousePosition.Y <= 328 + 60)
-                                    mossaScelta = mioPokemon.mosse[1];
-                                else if (mousePosition.X >= 182 && mousePosition.X <= 182 + 190 && mousePosition.Y >= 398 && mousePosition.Y <= 398 + 60)
-                                    mossaScelta = mioPokemon.mosse[2];
-                                else if (mousePosition.X >= 423 && mousePosition.X <= 423 + 190 && mousePosition.Y >= 398 && mousePosition.Y <= 398 + 60)
-                                    mossaScelta = mioPokemon.mosse[3];
-
-                                //Console.WriteLine("Mossa scelta: " + mossaScelta.ToString());
-                                /* DA QUI INSERIRE LA LOGICA TCP PER I TURNI */
-
-                               // myPeer = new TcpClient(); //creo l'oggetto myPeer che rappresenta il mio client
-                                //myPeer.Connect(ipAvversario, 42069); //provo a connettermi tramite il metodo connect, dandogli come input l'ip del secondo peer e la porta di ascolto
-
-                                
-
-                                string mossaDaMandare = String.Format("<root>" +
-                                "<comando>a</comando>" +
-                                "<nomeMossa>{0}</nomeMossa>" +
-                                "<tipoMossa>{1}</tipoMossa>" +
-                                "<danni>{2}</danni>" +
-                                "</root>", mossaScelta.nome, mossaScelta.tipo, mossaScelta.danni);
-
-                                swFP.WriteLine(mossaDaMandare);
-                                swFP.Flush();
-
-                                strPokemonSceltoAvversario = srFP.ReadLine();
-
-                                xmlDoc.LoadXml(strPokemonSceltoAvversario);
-
-                                pokemonAvversario.vita = Convert.ToInt32(xmlDoc.GetElementsByTagName("vitaRimanente")[0].InnerText);
-
-                                if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText) == 0)
-                                {
-                                    messaggioTurno = "danno normale";
-                                    if (Convert.ToInt32(xmlDoc.GetElementsByTagName("vitaRimanente")[0].InnerText) <= 0)
-                                    {
-                                        string sconfittoDaMandare = String.Format("<root>" +
-                                   "<comando>l</comando>" +
-                                   "<pokemon>{0}</pokemon>" +
-                                   "</root>", pokemonAvversario.nome);
-                                        swFP.WriteLine(sconfittoDaMandare);
-                                        swFP.Flush();
-                                    }
-                                }
-                                else if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText) == 1)
-                                {
-                                    messaggioTurno = "danno ridotto";
-                                    if (Convert.ToInt32(xmlDoc.GetElementsByTagName("vitaRimanente")[0].InnerText) <= 0)
-                                    {
-                                        string sconfittoDaMandare = String.Format("<root>" +
-                                   "<comando>l</comando>" +
-                                   "<pokemon>{0}</pokemon>" +
-                                   "</root>", pokemonAvversario.nome);
-                                        swFP.WriteLine(sconfittoDaMandare);
-                                        swFP.Flush();
-                                    }
-                                }
-                                else if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText) == 2)
-                                {
-                                    messaggioTurno = "danno superefficace";
-                                    if (Convert.ToInt32(xmlDoc.GetElementsByTagName("vitaRimanente")[0].InnerText) <= 0)
-                                    {
-                                        string sconfittoDaMandare = String.Format("<root>" +
-                                   "<comando>l</comando>" +
-                                   "<pokemon>{0}</pokemon>" +
-                                   "</root>", pokemonAvversario.nome);
-                                        swFP.WriteLine(sconfittoDaMandare);
-                                        swFP.Flush();
-                                    }
-                                }
-                                else if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText) == 3)
-                                {
-                                    messaggioTurno = "danno critico";
-                                    if (Convert.ToInt32(xmlDoc.GetElementsByTagName("vitaRimanente")[0].InnerText) <= 0)
-                                    {
-                                        string sconfittoDaMandare = String.Format("<root>" +
-                                   "<comando>l</comando>" +
-                                   "<pokemon>{0}</pokemon>" +
-                                   "</root>", pokemonAvversario.nome);
-                                        swFP.WriteLine(sconfittoDaMandare);
-                                        swFP.Flush();
-                                    }
-                                }
-                                else if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText) == 4)
-                                {
-                                    messaggioTurno = "no danno";
-                                    if (Convert.ToInt32(xmlDoc.GetElementsByTagName("vitaRimanente")[0].InnerText) <= 0)
-                                    {
-                                        string sconfittoDaMandare = String.Format("<root>" +
-                                   "<comando>l</comando>" +
-                                   "<pokemon>{0}</pokemon>" +
-                                   "</root>", pokemonAvversario.nome);
-                                        swFP.WriteLine(sconfittoDaMandare);
-                                        swFP.Flush();
-                                    }
-                                }
-
-                                
-                            }
-                        }
-                        else if (battleLogic.Equals("Zaino"))
-                        {
-                            myPeer = new TcpClient(); //creo l'oggetto myPeer che rappresenta il mio client
-                            myPeer.Connect(ipAvversario, 42069); //provo a connettermi tramite il metodo connect, dandogli come input l'ip del secondo peer e la porta di ascolto
-
-                            StreamWriter sw = new StreamWriter(myPeer.GetStream());
-                            StreamReader sr = new StreamReader(myPeer.GetStream());
-
-
-                            string oggetto = "pozione";
-                            string oggettoDaMandare = String.Format("<root>" +
-                                "<comando>i</comando>" +
-                                "<oggetto>{0}</oggetto>" +
-                                "<pokemon>{1}</pokemon>" +
-                                "<vitaAttuale>{2}</vitaAttuale>" +
-                                "</root>", oggetto, mioPokemon.nome, mioPokemon.vita);
-
-                            sw.WriteLine(oggettoDaMandare);
-                            sw.Flush();
-
-                        }
-                        else if (battleLogic.Equals("Cambia"))
-                        {
-                            myPeer = new TcpClient(); //creo l'oggetto myPeer che rappresenta il mio client
-                            myPeer.Connect(ipAvversario, 42069); //provo a connettermi tramite il metodo connect, dandogli come input l'ip del secondo peer e la porta di ascolto
-
-                            StreamWriter sw = new StreamWriter(myPeer.GetStream());
-                            StreamReader sr = new StreamReader(myPeer.GetStream());
-
-                            if (mouseState.LeftButton == ButtonState.Pressed)
-                            {
-                                var pokemonSelezionato = mieiPokemon.cambiaPokemon(mouseState);
-                                if (pokemonSelezionato != null)
-                                {
-                                    mioPokemon = pokemonSelezionato;
-                                    battleLogic = "";
-                                    /*DA QUI INSERIRE LA CONNESSIONE TCP DOVE INVIARE LE INFORMAZIONI AL SECONDO PEER*/
-
-                                    string pokemonDaMandare = String.Format("<root>" +
-                                                    "<comando>c</comando>" +
-                                                    "<pokemon>" +
-                                                        "<nome>{0}</nome>" +
-                                                        "<vita>{1}</vita>" +
-                                                        "<tipo>{2}</tipo>" +
-                                                        "</pokemon>" +
-                                                  "</root>", pokemonAvversario.nome,pokemonAvversario.vita,pokemonAvversario.tipo);
-
-                                    sw.WriteLine(pokemonDaMandare);
-                                    sw.Flush();
-
-                                }
-                            }
-                        }
-                        else if (battleLogic.Equals("Fuga"))
-                        {
-
-                        }
+                        if (mioTurno)
+                            eseguiTurno();
                     }
                 }
             }
@@ -426,12 +261,272 @@ namespace BattagliaPokemon
             }
             else if (gameLogic.Equals("battle"))
             {
-                if (mioTurno)
+                if (gameLogic.Equals("battle"))
                 {
-                    eseguiTurno();
-                    mioTurno = false;
+
+                    if (battleLogic.Equals("Zaino"))
+                    {
+
+                    }
+                    else if (battleLogic.Equals("Attacca"))
+                    {
+
+                        Texture2D rettMossa = new Texture2D(GraphicsDevice, 1, 1);
+                        Texture2D rettGoBack = new Texture2D(GraphicsDevice, 1, 1);
+                        rettMossa.SetData(new[] { Color.White });
+                        rettGoBack.SetData(new[] { Color.White });
+
+                        //disegna il pokemon avversario + il nome + vita
+                        _spriteBatch.Draw(pokemonAvversario.front, new Vector2(500, 20), Color.White);
+                        _spriteBatch.DrawString(generalFont, pokemonAvversario.nome, new Vector2(400, 20), Color.Black);
+                        _spriteBatch.DrawString(generalFont, "Vita: " + Convert.ToString(pokemonAvversario.vita), new Vector2(400, 40), Color.Black);
+
+                        //disegna il mio pokemon + il nome + vita
+                        _spriteBatch.Draw(mioPokemon.retro, new Vector2(200, 200), Color.White);
+                        _spriteBatch.DrawString(generalFont, mioPokemon.nome, new Vector2(270, 200), Color.Black);
+                        _spriteBatch.DrawString(generalFont, "Vita: " + Convert.ToString(mioPokemon.vita), new Vector2(270, 220), Color.Black);
+                        _spriteBatch.Draw(rettGoBack, new Rectangle(21, 398, 136, 60), Color.Red);
+                        _spriteBatch.DrawString(generalFont, "torna indietro", new Vector2(25, 402), Color.Black);
+
+                        int xAdder1 = 0;
+                        int xAdder2 = 0;
+                        //for per disegnare i rettangoli delle mosse
+                        for (int j = 0; j < mioPokemon.mosse.Length; j++)
+                        {
+                            if (j < 2) //new Rectangle(182 + xAdder1, 328, 190, 60)
+                            {
+                                if (mioPokemon.mosse[j].tipo == "Normale")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Gray);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Fuoco")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Orange);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Erba")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Green);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Psico")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.LightPink);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Acqua")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Blue);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.White);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Ghiaccio")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.DeepSkyBlue);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Drago")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Brown);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Buio")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Black);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.White);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Lotta")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Brown);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Volante")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.AliceBlue);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Veleno")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Purple);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Terra")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.SandyBrown);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Roccia")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.RosyBrown);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Spettro")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Purple);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Acciaio")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.DarkGray);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Coleottero")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.LightGreen);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Elettro")
+                                {
+                                    string nome = mioPokemon.mosse[j].nome;
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Yellow);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
+                                }
+                                xAdder1 = 241;
+                            }
+                            else
+                            {
+                                if (mioPokemon.mosse[j].tipo == "Normale")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Gray);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Fuoco")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Orange);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Erba")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Green);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Psico")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.LightPink);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Acqua")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Blue);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.White);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Ghiaccio")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.DeepSkyBlue);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Drago")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Brown);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Buio")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Black);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.White);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Lotta")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Brown);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Volante")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.AliceBlue);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Veleno")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Purple);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Terra")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.SandyBrown);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Roccia")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.RosyBrown);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Spettro")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Purple);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Acciaio")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.DarkGray);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Coleottero")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.LightGreen);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Elettro")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Yellow);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                }
+                                else if (mioPokemon.mosse[j].tipo == "Drago")
+                                {
+                                    _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.BlueViolet);
+                                    _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
+                                }
+                                xAdder2 = 241;
+                            }
+                        }
+
+                    }
+                    else if (battleLogic.Equals("Fuga"))
+                    {
+
+                    }
+                    else if (battleLogic.Equals("Cambia"))
+                    {
+                        int tmpX = 0;
+                        int posMioPokemon = -1;
+                        for (int i = 0; i < mieiPokemon.getNumeroPokemonScelti(); i++)
+                        {
+                            Pokemon tmp = mieiPokemon.getPokemonByPos(i);
+                            if (tmp != mioPokemon)
+                            {
+                                _spriteBatch.Draw(tmp.front,
+                                              new Vector2(tmpX, 0),
+                                              Color.White);
+                                tmp.posizione = new Vector2(tmpX, 0); //vado a cambiare la posizione che ha il pokemon 
+                                _spriteBatch.DrawString(generalFont, tmp.nome, new Vector2(tmpX, 90), Color.Black);
+                                tmpX += 105;
+                            }
+                            else
+                            {
+                                posMioPokemon = i;
+                            }
+                        }
+                        mieiPokemon.getPokemonByPos(posMioPokemon).posizione = new Vector2(-200, 0);//metto il pokemon che è in uso attualmente come posizione fouri dalla schermata di gioco => non premibile
+                    }
+                    else //esegue se non c'è una battleLogic (eseguita almeno una volta 
+                    {
+                        //Disegna la grafica generale
+                        _spriteBatch.Draw(BattleTexture, new Vector2(0, 0), Color.White);
+
+                        //disegna il pokemon avversario + il nome + vita
+                        _spriteBatch.Draw(pokemonAvversario.front, new Vector2(500, 20), Color.White);
+                        _spriteBatch.DrawString(generalFont, pokemonAvversario.nome, new Vector2(400, 20), Color.Black);
+                        _spriteBatch.DrawString(generalFont, "Vita: " + Convert.ToString(pokemonAvversario.vita), new Vector2(400, 40), Color.Black);
+
+                        //disegna il mio pokemon + il nome + vita
+                        _spriteBatch.Draw(mioPokemon.retro, new Vector2(200, 200), Color.White);
+                        _spriteBatch.DrawString(generalFont, mioPokemon.nome, new Vector2(270, 200), Color.Black);
+                        _spriteBatch.DrawString(generalFont, "Vita: " + Convert.ToString(mioPokemon.vita), new Vector2(270, 220), Color.Black);
+
+                    }
                 }
-                
+
             }
 
             _spriteBatch.DrawString(generalFont, debug, new Vector2(0, _graphics.PreferredBackBufferHeight - 25), Color.Black);
@@ -440,270 +535,175 @@ namespace BattagliaPokemon
         }
         private void eseguiTurno()
         {
-            if (gameLogic.Equals("battle"))
+            var mouseState = Mouse.GetState(); //vado a prendere lo stato del mouse
+            Vector2 mousePosition = new Vector2(mouseState.X, mouseState.Y); //vado a prendere la posizione del mouse
+            if (battleLogic.Equals("Attacca"))
+            {
+                if (mousePosition.X >= 21 && mousePosition.X <= 21 + 136 && mousePosition.Y >= 398 && mousePosition.Y <= 398 + 60) //bottone schermata attacca
+                {
+                    battleLogic = "";
+                }
+                else
+                {
+                    Mossa mossaScelta = new Mossa();
+                    if (mousePosition.X >= 182 && mousePosition.X <= 182 + 190 && mousePosition.Y >= 328 && mousePosition.Y <= 328 + 60)
+                        mossaScelta = mioPokemon.mosse[0];
+                    else if (mousePosition.X >= 423 && mousePosition.X <= 423 + 190 && mousePosition.Y >= 328 && mousePosition.Y <= 328 + 60)
+                        mossaScelta = mioPokemon.mosse[1];
+                    else if (mousePosition.X >= 182 && mousePosition.X <= 182 + 190 && mousePosition.Y >= 398 && mousePosition.Y <= 398 + 60)
+                        mossaScelta = mioPokemon.mosse[2];
+                    else if (mousePosition.X >= 423 && mousePosition.X <= 423 + 190 && mousePosition.Y >= 398 && mousePosition.Y <= 398 + 60)
+                        mossaScelta = mioPokemon.mosse[3];
+
+                    //Console.WriteLine("Mossa scelta: " + mossaScelta.ToString());
+                    /* DA QUI INSERIRE LA LOGICA TCP PER I TURNI */
+
+                    // myPeer = new TcpClient(); //creo l'oggetto myPeer che rappresenta il mio client
+                    //myPeer.Connect(ipAvversario, 42069); //provo a connettermi tramite il metodo connect, dandogli come input l'ip del secondo peer e la porta di ascolto
+
+
+
+                    string mossaDaMandare = String.Format("<root>" +
+                    "<comando>a</comando>" +
+                    "<nomeMossa>{0}</nomeMossa>" +
+                    "<tipoMossa>{1}</tipoMossa>" +
+                    "<danni>{2}</danni>" +
+                    "</root>", mossaScelta.nome, mossaScelta.tipo, mossaScelta.danni);
+
+                    swFP.WriteLine(mossaDaMandare);
+                    swFP.Flush();
+
+                    strPokemonSceltoAvversario = srFP.ReadLine();
+
+                    xmlDoc.LoadXml(strPokemonSceltoAvversario);
+
+                    pokemonAvversario.vita = Convert.ToInt32(xmlDoc.GetElementsByTagName("vitaRimanente")[0].InnerText);
+
+                    if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText) == 0)
+                    {
+                        messaggioTurno = "danno normale";
+                        if (Convert.ToInt32(xmlDoc.GetElementsByTagName("vitaRimanente")[0].InnerText) <= 0)
+                        {
+                            string sconfittoDaMandare = String.Format("<root>" +
+                       "<comando>l</comando>" +
+                       "<pokemon>{0}</pokemon>" +
+                       "</root>", pokemonAvversario.nome);
+                            swFP.WriteLine(sconfittoDaMandare);
+                            swFP.Flush();
+                        }
+                    }
+                    else if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText) == 1)
+                    {
+                        messaggioTurno = "danno ridotto";
+                        if (Convert.ToInt32(xmlDoc.GetElementsByTagName("vitaRimanente")[0].InnerText) <= 0)
+                        {
+                            string sconfittoDaMandare = String.Format("<root>" +
+                       "<comando>l</comando>" +
+                       "<pokemon>{0}</pokemon>" +
+                       "</root>", pokemonAvversario.nome);
+                            swFP.WriteLine(sconfittoDaMandare);
+                            swFP.Flush();
+                        }
+                    }
+                    else if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText) == 2)
+                    {
+                        messaggioTurno = "danno superefficace";
+                        if (Convert.ToInt32(xmlDoc.GetElementsByTagName("vitaRimanente")[0].InnerText) <= 0)
+                        {
+                            string sconfittoDaMandare = String.Format("<root>" +
+                       "<comando>l</comando>" +
+                       "<pokemon>{0}</pokemon>" +
+                       "</root>", pokemonAvversario.nome);
+                            swFP.WriteLine(sconfittoDaMandare);
+                            swFP.Flush();
+                        }
+                    }
+                    else if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText) == 3)
+                    {
+                        messaggioTurno = "danno critico";
+                        if (Convert.ToInt32(xmlDoc.GetElementsByTagName("vitaRimanente")[0].InnerText) <= 0)
+                        {
+                            string sconfittoDaMandare = String.Format("<root>" +
+                       "<comando>l</comando>" +
+                       "<pokemon>{0}</pokemon>" +
+                       "</root>", pokemonAvversario.nome);
+                            swFP.WriteLine(sconfittoDaMandare);
+                            swFP.Flush();
+                        }
+                    }
+                    else if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText) == 4)
+                    {
+                        messaggioTurno = "no danno";
+                        if (Convert.ToInt32(xmlDoc.GetElementsByTagName("vitaRimanente")[0].InnerText) <= 0)
+                        {
+                            string sconfittoDaMandare = String.Format("<root>" +
+                       "<comando>l</comando>" +
+                       "<pokemon>{0}</pokemon>" +
+                       "</root>", pokemonAvversario.nome);
+                            swFP.WriteLine(sconfittoDaMandare);
+                            swFP.Flush();
+                        }
+                    }
+
+
+                }
+            }
+            else if (battleLogic.Equals("Zaino"))
+            {
+                myPeer = new TcpClient(); //creo l'oggetto myPeer che rappresenta il mio client
+                myPeer.Connect(ipAvversario, 42069); //provo a connettermi tramite il metodo connect, dandogli come input l'ip del secondo peer e la porta di ascolto
+
+                StreamWriter sw = new StreamWriter(myPeer.GetStream());
+                StreamReader sr = new StreamReader(myPeer.GetStream());
+
+
+                string oggetto = "pozione";
+                string oggettoDaMandare = String.Format("<root>" +
+                    "<comando>i</comando>" +
+                    "<oggetto>{0}</oggetto>" +
+                    "<pokemon>{1}</pokemon>" +
+                    "<vitaAttuale>{2}</vitaAttuale>" +
+                    "</root>", oggetto, mioPokemon.nome, mioPokemon.vita);
+
+                sw.WriteLine(oggettoDaMandare);
+                sw.Flush();
+
+            }
+            else if (battleLogic.Equals("Cambia"))
+            {
+                myPeer = new TcpClient(); //creo l'oggetto myPeer che rappresenta il mio client
+                myPeer.Connect(ipAvversario, 42069); //provo a connettermi tramite il metodo connect, dandogli come input l'ip del secondo peer e la porta di ascolto
+
+                StreamWriter sw = new StreamWriter(myPeer.GetStream());
+                StreamReader sr = new StreamReader(myPeer.GetStream());
+
+                if (mouseState.LeftButton == ButtonState.Pressed)
+                {
+                    var pokemonSelezionato = mieiPokemon.cambiaPokemon(mouseState);
+                    if (pokemonSelezionato != null)
+                    {
+                        mioPokemon = pokemonSelezionato;
+                        battleLogic = "";
+                        /*DA QUI INSERIRE LA CONNESSIONE TCP DOVE INVIARE LE INFORMAZIONI AL SECONDO PEER*/
+
+                        string pokemonDaMandare = String.Format("<root>" +
+                                        "<comando>c</comando>" +
+                                        "<pokemon>" +
+                                            "<nome>{0}</nome>" +
+                                            "<vita>{1}</vita>" +
+                                            "<tipo>{2}</tipo>" +
+                                            "</pokemon>" +
+                                      "</root>", pokemonAvversario.nome, pokemonAvversario.vita, pokemonAvversario.tipo);
+
+                        sw.WriteLine(pokemonDaMandare);
+                        sw.Flush();
+
+                    }
+                }
+            }
+            else if (battleLogic.Equals("Fuga"))
             {
 
-                if (battleLogic.Equals("Zaino"))
-                {
-
-                }
-                else if (battleLogic.Equals("Attacca"))
-                {
-
-                    Texture2D rettMossa = new Texture2D(GraphicsDevice, 1, 1);
-                    Texture2D rettGoBack = new Texture2D(GraphicsDevice, 1, 1);
-                    rettMossa.SetData(new[] { Color.White });
-                    rettGoBack.SetData(new[] { Color.White });
-
-                    //disegna il pokemon avversario + il nome + vita
-                    _spriteBatch.Draw(pokemonAvversario.front, new Vector2(500, 20), Color.White);
-                    _spriteBatch.DrawString(generalFont, pokemonAvversario.nome, new Vector2(400, 20), Color.Black);
-                    _spriteBatch.DrawString(generalFont, "Vita: " + Convert.ToString(pokemonAvversario.vita), new Vector2(400, 40), Color.Black);
-
-                    //disegna il mio pokemon + il nome + vita
-                    _spriteBatch.Draw(mioPokemon.retro, new Vector2(200, 200), Color.White);
-                    _spriteBatch.DrawString(generalFont, mioPokemon.nome, new Vector2(270, 200), Color.Black);
-                    _spriteBatch.DrawString(generalFont, "Vita: " + Convert.ToString(mioPokemon.vita), new Vector2(270, 220), Color.Black);
-                    _spriteBatch.Draw(rettGoBack, new Rectangle(21, 398, 136, 60), Color.Red);
-                    _spriteBatch.DrawString(generalFont, "torna indietro", new Vector2(25, 402), Color.Black);
-
-                    int xAdder1 = 0;
-                    int xAdder2 = 0;
-                    //for per disegnare i rettangoli delle mosse
-                    for (int j = 0; j < mioPokemon.mosse.Length; j++)
-                    {
-                        if (j < 2) //new Rectangle(182 + xAdder1, 328, 190, 60)
-                        {
-                            if (mioPokemon.mosse[j].tipo == "Normale")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Gray);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Fuoco")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Orange);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Erba")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Green);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Psico")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.LightPink);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
-
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Acqua")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Blue);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.White);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Ghiaccio")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.DeepSkyBlue);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Drago")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Brown);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Buio")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Black);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.White);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Lotta")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Brown);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Volante")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.AliceBlue);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Veleno")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Purple);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Terra")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.SandyBrown);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Roccia")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.RosyBrown);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Spettro")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Purple);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Acciaio")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.DarkGray);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Coleottero")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.LightGreen);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Elettro")
-                            {
-                                string nome = mioPokemon.mosse[j].nome;
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder1, 328, 190, 60), Color.Yellow);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder1, 332), Color.Black);
-                            }
-                            xAdder1 = 241;
-                        }
-                        else
-                        {
-                            if (mioPokemon.mosse[j].tipo == "Normale")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Gray);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Fuoco")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Orange);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Erba")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Green);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Psico")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.LightPink);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
-
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Acqua")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Blue);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.White);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Ghiaccio")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.DeepSkyBlue);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Drago")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Brown);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Buio")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Black);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.White);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Lotta")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Brown);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Volante")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.AliceBlue);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Veleno")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Purple);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Terra")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.SandyBrown);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Roccia")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.RosyBrown);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Spettro")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Purple);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Acciaio")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.DarkGray);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Coleottero")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.LightGreen);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Elettro")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.Yellow);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
-                            }
-                            else if (mioPokemon.mosse[j].tipo == "Drago")
-                            {
-                                _spriteBatch.Draw(rettMossa, new Rectangle(182 + xAdder2, 398, 190, 60), Color.BlueViolet);
-                                _spriteBatch.DrawString(generalFont, mioPokemon.mosse[j].nome, new Vector2(185 + xAdder2, 400), Color.Black);
-                            }
-                            xAdder2 = 241;
-                        }
-                    }
-
-                }
-                else if (battleLogic.Equals("Fuga"))
-                {
-
-                }
-                else if (battleLogic.Equals("Cambia"))
-                {
-                    int tmpX = 0;
-                    int posMioPokemon = -1;
-                    for (int i = 0; i < mieiPokemon.getNumeroPokemonScelti(); i++)
-                    {
-                        Pokemon tmp = mieiPokemon.getPokemonByPos(i);
-                        if (tmp != mioPokemon)
-                        {
-                            _spriteBatch.Draw(tmp.front,
-                                          new Vector2(tmpX, 0),
-                                          Color.White);
-                            tmp.posizione = new Vector2(tmpX, 0); //vado a cambiare la posizione che ha il pokemon 
-                            _spriteBatch.DrawString(generalFont, tmp.nome, new Vector2(tmpX, 90), Color.Black);
-                            tmpX += 105;
-                        }
-                        else
-                        {
-                            posMioPokemon = i;
-                        }
-                    }
-                    mieiPokemon.getPokemonByPos(posMioPokemon).posizione = new Vector2(-200, 0);//metto il pokemon che è in uso attualmente come posizione fouri dalla schermata di gioco => non premibile
-                }
-                else //esegue se non c'è una battleLogic (eseguita almeno una volta 
-                {
-                    //Disegna la grafica generale
-                    _spriteBatch.Draw(BattleTexture, new Vector2(0, 0), Color.White);
-
-                    //disegna il pokemon avversario + il nome + vita
-                    _spriteBatch.Draw(pokemonAvversario.front, new Vector2(500, 20), Color.White);
-                    _spriteBatch.DrawString(generalFont, pokemonAvversario.nome, new Vector2(400, 20), Color.Black);
-                    _spriteBatch.DrawString(generalFont, "Vita: " + Convert.ToString(pokemonAvversario.vita), new Vector2(400, 40), Color.Black);
-
-                    //disegna il mio pokemon + il nome + vita
-                    _spriteBatch.Draw(mioPokemon.retro, new Vector2(200, 200), Color.White);
-                    _spriteBatch.DrawString(generalFont, mioPokemon.nome, new Vector2(270, 200), Color.Black);
-                    _spriteBatch.DrawString(generalFont, "Vita: " + Convert.ToString(mioPokemon.vita), new Vector2(270, 220), Color.Black);
-
-                }
             }
         }
 
