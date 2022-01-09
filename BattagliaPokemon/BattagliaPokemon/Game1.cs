@@ -257,7 +257,9 @@ namespace BattagliaPokemon
                         }
                         else if (battleLogic.Equals("Fuga"))
                         {
-
+                            battleLogic = "";
+                            /*qui inserire la logica tcp*/
+                            gameLogic = "sceltaPokemon";
                         }
                     }
                 }
@@ -517,10 +519,6 @@ namespace BattagliaPokemon
                     }
 
                 }
-                else if (battleLogic.Equals("Fuga"))
-                {
-
-                }
                 else if (battleLogic.Equals("Cambia"))
                 {
                     int tmpX = 0;
@@ -562,7 +560,7 @@ namespace BattagliaPokemon
                 }
             }
 
-            _spriteBatch.DrawString(generalFont, debug, new Vector2(0, _graphics.PreferredBackBufferHeight - 25), Color.Black);
+            //_spriteBatch.DrawString(generalFont, debug, new Vector2(0, _graphics.PreferredBackBufferHeight - 25), Color.Black);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
