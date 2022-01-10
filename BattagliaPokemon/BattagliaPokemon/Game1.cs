@@ -7,6 +7,8 @@ using System.Net.Sockets;
 using System.IO;
 using System.Net;
 using System.Xml;
+using NAudio;
+using NAudio.Wave;
 
 namespace BattagliaPokemon
 {
@@ -14,7 +16,6 @@ namespace BattagliaPokemon
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
         //font per disegnare
         private SpriteFont generalFont;
 
@@ -49,7 +50,9 @@ namespace BattagliaPokemon
         //variabili temporanee da sostituire con classi
         private string strMioPokemon;
         private string strPokemonSceltoAvversario;
-
+        private bool eseguito = false;
+        private WaveOutEvent outputDevice = new WaveOutEvent();
+        private AudioFileReader audioFile;
         //connessione
         TcpClient myPeer;
         TcpClient secondPeer;
@@ -523,24 +526,31 @@ namespace BattagliaPokemon
 
                     if (done1 == false || done2 == false)
                     {
+
+
+
                         if (posAnimazioneAvversario > 500)
                         {
                             _spriteBatch.Draw(pokemonAvversario.front, new Vector2(posAnimazioneAvversario, 20), Color.White);
-                            posAnimazioneAvversario-=2;
+                            posAnimazioneAvversario -= 2;
                         }
                         else
                         {
                             done1 = true;
                         }
-                        if(posAnimazioneIo < 300)
+                        if (posAnimazioneIo < 300)
                         {
                             _spriteBatch.Draw(mioPokemon.retro, new Vector2(posAnimazioneIo, 200), Color.White);
-                            posAnimazioneIo+=2;
-                            
+                            posAnimazioneIo += 2;
+
                         }
                         else
                         {
                             done2 = true;
+                        }
+                        if (!eseguito)
+                        {
+                            OnButtonPlayClick();
                         }
                     }
                     else
@@ -553,7 +563,7 @@ namespace BattagliaPokemon
                         _spriteBatch.DrawString(generalFont, mioPokemon.nome, new Vector2(270, 200), Color.Black);
                         _spriteBatch.DrawString(generalFont, "Vita: " + Convert.ToString(mioPokemon.vita), new Vector2(270, 220), Color.Black);
                     }
-                    
+
 
                 }
                 if (mioTurno)
@@ -569,6 +579,13 @@ namespace BattagliaPokemon
             _spriteBatch.DrawString(generalFont, debug, new Vector2(0, _graphics.PreferredBackBufferHeight - 25), Color.Black);
             _spriteBatch.End();
             base.Draw(gameTime);
+        }
+        private void OnButtonPlayClick()
+        {
+            audioFile = new AudioFileReader("POKEMON BATTLE START SOUND EFFECT.mp3");
+            outputDevice.Init(audioFile);
+            outputDevice.Play();
+            eseguito = true;
         }
 
         private void eseguiTurno()
