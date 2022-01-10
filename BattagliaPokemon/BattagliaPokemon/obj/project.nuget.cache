@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xewCGEG7F1ZJT4SK/AbWgo9y5fMM5GXiWnm+D5ZZrG1UsWVNO6RykoYiE1/yGusdFr7pne1DnCr/DxZFOnF2xQ==",
+  "dgSpecHash": "GW07FMG+9pcwrBw5Nf8HdX41oRbSwTKyIju3dbpHnmKsGMgwK6Uy5co/c4OCuj1WKRN3Su2i7fKGcDZREQqunA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\lucid\\Desktop\\GIT REPOSITORY\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon.csproj",
+  "projectFilePath": "D:\\Scuola\\GITHUB\\PokemonBattle\\BattagliaPokemon\\BattagliaPokemon\\BattagliaPokemon.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lucid\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\lucid\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",

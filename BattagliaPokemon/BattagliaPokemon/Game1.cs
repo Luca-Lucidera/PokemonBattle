@@ -69,7 +69,6 @@ namespace BattagliaPokemon
             IsMouseVisible = true;
             Window.TextInput += TextInputHandler;
         }
-
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -82,7 +81,6 @@ namespace BattagliaPokemon
 
             base.Initialize();
         }
-
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -115,7 +113,6 @@ namespace BattagliaPokemon
             strPokemonSceltoAvversario = "";
 
         }
-
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -225,7 +222,7 @@ namespace BattagliaPokemon
                     }
                     else
                     {
-                        Thread.Sleep(130);
+                        Thread.Sleep(33);
                         if (mioTurno)
                             eseguiTurno();
                     }
@@ -233,7 +230,6 @@ namespace BattagliaPokemon
             }
             base.Update(gameTime);
         }
-
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -268,15 +264,12 @@ namespace BattagliaPokemon
             }
             else if (gameLogic.Equals("battle"))
             {
-
-
                 if (battleLogic.Equals("Zaino"))
                 {
 
                 }
                 else if (battleLogic.Equals("Attacca"))
                 {
-
                     Texture2D rettMossa = new Texture2D(GraphicsDevice, 1, 1);
                     Texture2D rettGoBack = new Texture2D(GraphicsDevice, 1, 1);
                     rettMossa.SetData(new[] { Color.White });
@@ -486,11 +479,6 @@ namespace BattagliaPokemon
                             xAdder2 = 241;
                         }
                     }
-
-                }
-                else if (battleLogic.Equals("Fuga"))
-                {
-
                 }
                 else if (battleLogic.Equals("Cambia"))
                 {
@@ -499,7 +487,7 @@ namespace BattagliaPokemon
                     for (int i = 0; i < mieiPokemon.getNumeroPokemonScelti(); i++)
                     {
                         Pokemon tmp = mieiPokemon.getPokemonByPos(i);
-                        if (tmp != mioPokemon)
+                        if (tmp != mioPokemon && mioPokemon.vita > 0)
                         {
                             _spriteBatch.Draw(tmp.front,
                                           new Vector2(tmpX, 0),
@@ -580,14 +568,165 @@ namespace BattagliaPokemon
             _spriteBatch.End();
             base.Draw(gameTime);
         }
-        private void audioEntrataPokemon()
+        private void riceviDati()
         {
-            audioFile = new AudioFileReader("POKEMON BATTLE START SOUND EFFECT.mp3");
-            outputDevice.Init(audioFile);
-            outputDevice.Play();
-            eseguito = true;
-        }
+            TcpListener listener = new TcpListener(IPAddress.Any, 42069);
+            listener.Start();
+            StreamWriter sw;
+            StreamReader sr;
+            secondPeer = listener.AcceptTcpClient();
 
+
+            Socket s = secondPeer.Client;
+            try
+            {
+                myPeer.Connect(((IPEndPoint)s.RemoteEndPoint).Address, 42069);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+
+            while (true)
+            {
+                try
+                {
+                    sw = new StreamWriter(secondPeer.GetStream());
+                    sr = new StreamReader(secondPeer.GetStream());
+                    string strClientInput = sr.ReadLine();
+
+                    if (strClientInput != null)
+                    {
+                        xmlDoc.LoadXml(strClientInput);
+
+                        if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "m")
+                        {
+                            sw.WriteLine(String.Format("<root>" +
+                            "<comando>m</comando>" +
+                            "<nome>{0}</nome>" +
+                            "</root>", nome));
+                            sw.Flush();
+                            sw.WriteLine(mieiPokemon.getPokemonByPos(0).ToXML());
+                            sw.Flush();
+                            mioPokemon = mieiPokemon.getPokemonByPos(0);
+                        }
+                        else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "s")
+                        {
+                            nodoPokemon = xmlDoc.DocumentElement.ChildNodes[1];
+                            pokemonAvversario = new Pokemon(nodoPokemon.ChildNodes[0].InnerText, nodoPokemon.ChildNodes[2].InnerText, Convert.ToInt32(nodoPokemon.ChildNodes[1].InnerText), this);
+                            gameLogic = "battle";
+                        }
+                        else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "a")
+                        {
+                            string mossaDaMandare = "";
+                            if ((mioPokemon.tipo == "Fuoco" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Terra" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Roccia" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Acqua")) ||
+                               (mioPokemon.tipo == "Acqua" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Erba" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Elettro")) ||
+                               (mioPokemon.tipo == "Erba" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Volante" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Veleno" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Coleottero" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Fuoco" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Ghiaccio")) ||
+                               (mioPokemon.tipo == "Elettro" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Terra")) ||
+                               (mioPokemon.tipo == "Terra" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Acqua" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Erba" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Ghiaccio")) ||
+                               (mioPokemon.tipo == "Volante" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Elettro" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Roccia" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Ghiaccio")) ||
+                               (mioPokemon.tipo == "Veleno" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Terra" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Pisco")) ||
+                               (mioPokemon.tipo == "Normale" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Lotta" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Psico" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Folletto")))
+                            {
+                                mioPokemon.vita = mioPokemon.vita - (Convert.ToInt32(xmlDoc.GetElementsByTagName("danni")[0].InnerText) * 2);
+                                if (mioPokemon.vita <= 0)
+                                {
+                                    battleLogic = "Cambia";
+                                    mioTurno = false;
+                                    mossaDaMandare = String.Format("<root>" +
+                                "<comando>r</comando>" +
+                                "<vitaRimanente>{0}</vitaRimanente>" +
+                                "<moltiplicatore>{1}</moltiplicatore>" +
+                                "</root>", mioPokemon.vita, 2);
+                                }
+                                else
+                                {
+                                    mossaDaMandare = String.Format("<root>" +
+                                "<comando>r</comando>" +
+                                "<vitaRimanente>{0}</vitaRimanente>" +
+                                "<moltiplicatore>{1}</moltiplicatore>" +
+                                "</root>", mioPokemon.vita, 2);
+                                    mioTurno = true;
+                                }
+
+                            }
+                            else
+                            {
+                                mioPokemon.vita = mioPokemon.vita - Convert.ToInt32(xmlDoc.GetElementsByTagName("danni")[0].InnerText);
+                                if (mioPokemon.vita <= 0)
+                                {
+                                    battleLogic = "Cambia";
+                                    mioTurno = false;
+                                    mossaDaMandare = String.Format("<root>" +
+                                "<comando>r</comando>" +
+                                "<vitaRimanente>{0}</vitaRimanente>" +
+                                "<moltiplicatore>{1}</moltiplicatore>" +
+                                "</root>", mioPokemon.vita, 2);
+                                }
+                                else
+                                {
+                                    mossaDaMandare = String.Format("<root>" +
+                                "<comando>r</comando>" +
+                                "<vitaRimanente>{0}</vitaRimanente>" +
+                                "<moltiplicatore>{1}</moltiplicatore>" +
+                                "</root>", mioPokemon.vita, 2);
+                                    mioTurno = true;
+                                }
+
+
+
+                            }
+                            sw.WriteLine(mossaDaMandare);
+                            sw.Flush();
+                        }
+                        else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "i")
+                        {
+                            string oggetto = sr.ReadLine();
+                            xmlDoc.LoadXml(oggetto);
+                            pokemonAvversario.vita = Convert.ToInt32(xmlDoc.GetElementsByTagName("vitaAttuale")[0].InnerText);
+                            mioTurno = true;
+                        }
+                        else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "f")
+                        {
+                            break;
+                        }
+                        else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "c")
+                        {
+                            string tmp = strClientInput;
+                            pokemonAvversario = allPokemon.getPokemonByName(xmlDoc.GetElementsByTagName("nome")[0].InnerText);
+                            pokemonAvversario.vita = Convert.ToInt32(xmlDoc.GetElementsByTagName("vita")[0].InnerText);
+                            mioTurno = true;
+                        }
+                        else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "l")
+                        {
+                            c++;
+                            battleLogic = "Cambia";
+                            mioTurno = true;
+                            if (c == 6)
+                            {
+                                //interrompi battaglia ovvero la connessione
+
+                                break;
+
+                            }
+
+                        }
+                        else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "e")
+                        {
+                            sw.WriteLine(" ");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+            }
+            sw.Close();
+            sr.Close();
+        } //Cosa esegue il secondo peer
         private void eseguiTurno()
         {
             var mouseState = Mouse.GetState(); //vado a prendere lo stato del mouse
@@ -610,7 +749,7 @@ namespace BattagliaPokemon
                     else if (mousePosition.X >= 423 && mousePosition.X <= 423 + 190 && mousePosition.Y >= 398 && mousePosition.Y <= 398 + 60)
                         mossaScelta = mioPokemon.mosse[3];
 
-                    
+
 
 
                     string mossaDaMandare = String.Format("<root>" +
@@ -764,7 +903,13 @@ namespace BattagliaPokemon
 
             }
         }
-
+        private void audioEntrataPokemon()
+        {
+            audioFile = new AudioFileReader("POKEMON BATTLE START SOUND EFFECT.mp3");
+            outputDevice.Init(audioFile);
+            outputDevice.Play();
+            eseguito = true;
+        }
         //funzione per gestire l'input da tastiera
         private void TextInputHandler(object sender, TextInputEventArgs args)
         {
@@ -799,136 +944,6 @@ namespace BattagliaPokemon
             }
 
         }
-
-        //funzione eseguita dal thread per ricevere i dati dal 1° peer al 2° peer
-        private void riceviDati()
-        {
-            TcpListener listener = new TcpListener(IPAddress.Any, 42069);
-            listener.Start();
-            StreamWriter sw;
-            StreamReader sr;
-            secondPeer = listener.AcceptTcpClient();
-
-            
-            Socket s = secondPeer.Client;
-            try
-            {
-                myPeer.Connect(((IPEndPoint)s.RemoteEndPoint).Address, 42069);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-           
-
-            while (true)
-            {
-                try
-                {
-                    sw = new StreamWriter(secondPeer.GetStream());
-                    sr = new StreamReader(secondPeer.GetStream());
-                    string strClientInput = sr.ReadLine();
-
-                    if (strClientInput != null)
-                    {
-                        xmlDoc.LoadXml(strClientInput);
-
-                        if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "m")
-                        {
-                            sw.WriteLine(String.Format("<root>" +
-                            "<comando>m</comando>" +
-                            "<nome>{0}</nome>" +
-                            "</root>", nome));
-                            sw.Flush();
-                            sw.WriteLine(mieiPokemon.getPokemonByPos(0).ToXML());
-                            sw.Flush();
-                            mioPokemon = mieiPokemon.getPokemonByPos(0);
-                        }
-                        else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "s")
-                        {
-                            nodoPokemon = xmlDoc.DocumentElement.ChildNodes[1];
-                            pokemonAvversario = new Pokemon(nodoPokemon.ChildNodes[0].InnerText, nodoPokemon.ChildNodes[2].InnerText, Convert.ToInt32(nodoPokemon.ChildNodes[1].InnerText), this);
-                            gameLogic = "battle";
-                        }
-
-                        else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "a")
-                        {
-                            if ((mioPokemon.tipo == "Fuoco" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Terra" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Roccia" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Acqua")) ||
-                               (mioPokemon.tipo == "Acqua" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Erba" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Elettro")) ||
-                               (mioPokemon.tipo == "Erba" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Volante" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Veleno" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Coleottero" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Fuoco" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Ghiaccio")) ||
-                               (mioPokemon.tipo == "Elettro" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Terra")) ||
-                               (mioPokemon.tipo == "Terra" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Acqua" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Erba" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Ghiaccio")) ||
-                               (mioPokemon.tipo == "Volante" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Elettro" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Roccia" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Ghiaccio")) ||
-                               (mioPokemon.tipo == "Veleno" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Terra" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Pisco")) ||
-                               (mioPokemon.tipo == "Normale" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Lotta" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Psico" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Folletto")))
-                            {
-                                mioPokemon.vita = mioPokemon.vita - (Convert.ToInt32(xmlDoc.GetElementsByTagName("danni")[0].InnerText) * 2);
-                                string mossaDaMandare = String.Format("<root>" +
-                                   "<comando>r</comando>" +
-                                   "<vitaRimanente>{0}</vitaRimanente>" +
-                                   "<moltiplicatore>{1}</moltiplicatore>" +
-                                   "</root>", mioPokemon.vita, 2);
-                                sw.WriteLine(mossaDaMandare);
-                                sw.Flush();
-                                mioTurno = true;
-                            }
-                            else
-                            {
-                                mioPokemon.vita = mioPokemon.vita - Convert.ToInt32(xmlDoc.GetElementsByTagName("danni")[0].InnerText);
-                                string mossaDaMandare = String.Format("<root>" +
-                                   "<comando>r</comando>" +
-                                   "<vitaRimanente>{0}</vitaRimanente>" +
-                                   "<moltiplicatore>{1}</moltiplicatore>" +
-                                   "</root>", mioPokemon.vita, 0);
-                                sw.WriteLine(mossaDaMandare);
-                                sw.Flush();
-                                mioTurno = true;
-                            }
-                        }
-                        else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "i")
-                        {
-                            string oggetto = sr.ReadLine();
-                            xmlDoc.LoadXml(oggetto);
-                            pokemonAvversario.vita = Convert.ToInt32(xmlDoc.GetElementsByTagName("vitaAttuale")[0].InnerText);
-                            mioTurno = true;
-                        }
-                        else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "f")
-                        {
-                            mioTurno = true;
-                        }
-                        else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "c")
-                        {
-                            string tmp = strClientInput;
-                            pokemonAvversario = allPokemon.getPokemonByName(xmlDoc.GetElementsByTagName("nome")[0].InnerText);
-                            mioTurno = true;
-                        }
-                        else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "l")
-                        {
-                            c++;
-
-                            if (c == 6)
-                            {
-                                //interrompi battaglia ovvero la connessione
-
-                                break;
-
-                            }
-
-                        }
-                        else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "e")
-                        {
-                            sw.WriteLine(" ");
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-
-            }
-            sw.Close();
-            sr.Close();
-        }
+        
     }
 }
