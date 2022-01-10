@@ -162,5 +162,15 @@ namespace BattagliaPokemon
             }
             return null;
         }
+
+        public Pokemon getPokemonByName(string name)
+        {
+            for (int i = 0; i < pokemon.Length; i++)
+            {
+                if (pokemon[i].nome.Equals(name))
+                    return pokemon[i];
+            }
+            return null;
+        }
     }
 }
