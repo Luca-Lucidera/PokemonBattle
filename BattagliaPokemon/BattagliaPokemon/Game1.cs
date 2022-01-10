@@ -42,9 +42,13 @@ namespace BattagliaPokemon
         private string ipAvversario = "";
         private string messaggioTurno = "";
         private bool mioTurno = false;
+        private bool done1 = false;
+        private bool done2 = false;
+        private int posAnimazioneAvversario = 800;
+        private int posAnimazioneIo = 0;
         //variabili temporanee da sostituire con classi
-        string strMioPokemon;
-        string strPokemonSceltoAvversario;
+        private string strMioPokemon;
+        private string strPokemonSceltoAvversario;
 
         //connessione
         TcpClient myPeer;
@@ -512,16 +516,44 @@ namespace BattagliaPokemon
                 {
                     //Disegna la grafica generale
                     _spriteBatch.Draw(BattleTexture, new Vector2(0, 0), Color.White);
-
                     //disegna il pokemon avversario + il nome + vita
-                    _spriteBatch.Draw(pokemonAvversario.front, new Vector2(500, 20), Color.White);
-                    _spriteBatch.DrawString(generalFont, pokemonAvversario.nome, new Vector2(400, 20), Color.Black);
-                    _spriteBatch.DrawString(generalFont, "Vita: " + Convert.ToString(pokemonAvversario.vita), new Vector2(400, 40), Color.Black);
 
-                    //disegna il mio pokemon + il nome + vita
-                    _spriteBatch.Draw(mioPokemon.retro, new Vector2(200, 200), Color.White);
-                    _spriteBatch.DrawString(generalFont, mioPokemon.nome, new Vector2(270, 200), Color.Black);
-                    _spriteBatch.DrawString(generalFont, "Vita: " + Convert.ToString(mioPokemon.vita), new Vector2(270, 220), Color.Black);
+
+                    //doAnimation("Mio", mioPokemon);
+
+                    if (done1 == false || done2 == false)
+                    {
+                        if (posAnimazioneAvversario > 500)
+                        {
+                            _spriteBatch.Draw(pokemonAvversario.front, new Vector2(posAnimazioneAvversario, 20), Color.White);
+                            posAnimazioneAvversario-=2;
+                        }
+                        else
+                        {
+                            done1 = true;
+                        }
+                        if(posAnimazioneIo < 300)
+                        {
+                            _spriteBatch.Draw(mioPokemon.retro, new Vector2(posAnimazioneIo, 200), Color.White);
+                            posAnimazioneIo+=2;
+                            
+                        }
+                        else
+                        {
+                            done2 = true;
+                        }
+                    }
+                    else
+                    {
+                        _spriteBatch.Draw(pokemonAvversario.front, new Vector2(500, 20), Color.White);
+                        _spriteBatch.DrawString(generalFont, pokemonAvversario.nome, new Vector2(400, 20), Color.Black);
+                        _spriteBatch.DrawString(generalFont, "Vita: " + Convert.ToString(pokemonAvversario.vita), new Vector2(400, 40), Color.Black);
+
+                        _spriteBatch.Draw(mioPokemon.retro, new Vector2(200, 200), Color.White);
+                        _spriteBatch.DrawString(generalFont, mioPokemon.nome, new Vector2(270, 200), Color.Black);
+                        _spriteBatch.DrawString(generalFont, "Vita: " + Convert.ToString(mioPokemon.vita), new Vector2(270, 220), Color.Black);
+                    }
+                    
 
                 }
                 if (mioTurno)
@@ -534,13 +566,11 @@ namespace BattagliaPokemon
 
                 }
             }
-
-
-
             _spriteBatch.DrawString(generalFont, debug, new Vector2(0, _graphics.PreferredBackBufferHeight - 25), Color.Black);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
+
         private void eseguiTurno()
         {
             var mouseState = Mouse.GetState(); //vado a prendere lo stato del mouse
@@ -772,6 +802,8 @@ namespace BattagliaPokemon
             StreamWriter sw;
             StreamReader sr;
             secondPeer = listener.AcceptTcpClient();
+
+            /*
             Socket s = secondPeer.Client;
             try
             {
@@ -781,6 +813,7 @@ namespace BattagliaPokemon
             {
                 Console.WriteLine(ex);
             }
+           */
 
             while (true)
             {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Front/nidokingFront.png</SourceFile>
-  <SourceTime>2022-01-08T14:38:15.1709696+01:00</SourceTime>
-  <DestFile>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/bin/DesktopGL/Content/Pokemon/Front/nidokingFront.xnb</DestFile>
-  <DestTime>2022-01-09T15:45:21.1162006+01:00</DestTime>
+  <SourceFile>C:/Users/lucid/Desktop/GIT REPOSITORY/BattagliaPokemon/BattagliaPokemon/BattagliaPokemon/Content/Pokemon/Front/nidokingFront.png</SourceFile>
+  <SourceTime>2022-01-09T16:44:05.3621399+01:00</SourceTime>
+  <DestFile>C:/Users/lucid/Desktop/GIT REPOSITORY/BattagliaPokemon/BattagliaPokemon/BattagliaPokemon/Content/bin/DesktopGL/Content/Pokemon/Front/nidokingFront.xnb</DestFile>
+  <DestTime>2022-01-10T09:01:14.8237636+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2020-08-10T18:17:54+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

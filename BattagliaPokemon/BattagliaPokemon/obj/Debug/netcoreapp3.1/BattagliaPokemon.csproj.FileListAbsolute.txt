@@ -139,3 +139,53 @@ C:\Desktop\SCOLA\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netco
 C:\Desktop\SCOLA\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\pidgeotRetro.xnb
 C:\Desktop\SCOLA\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\pikachuRetro.xnb
 C:\Desktop\SCOLA\PokemonBattle\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\raticateRetro.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\pg.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\BulbasaurFront.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\BulbasaurRetro.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\CharmanderFront.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\CharmanderRetro.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\poliwhirlFront.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\poliwhirlRetro.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\confButton.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Desktop - Battaglia.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Font.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\ipselect.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Front\BulbasaurFront.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Front\CharmanderFront.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Front\nidokingFront.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Front\pidgeotFront.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Front\pikachuFront.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Front\poliwhirlFront.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Front\raticateFront.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\BulbasaurRetro.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\CharmanderRetro.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\nidokingRetro.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\pidgeotRetro.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\pikachuRetro.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\poliwhirlRetro.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\Pokemon\Retro\raticateRetro.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\Content\sceltaNomeD1.xnb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\BattagliaPokemon.exe
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\BattagliaPokemon.deps.json
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\BattagliaPokemon.runtimeconfig.json
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\BattagliaPokemon.runtimeconfig.dev.json
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\BattagliaPokemon.dll
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\BattagliaPokemon.pdb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\MonoGame.Framework.dll
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\runtimes\linux-x64\native\libSDL2-2.0.so.0
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\runtimes\linux-x64\native\libopenal.so.1
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\runtimes\osx\native\libSDL2-2.0.0.dylib
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\runtimes\osx\native\libopenal.1.dylib
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\SDL2.dll
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\soft_oal.dll
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\SDL2.dll
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\soft_oal.dll
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\obj\Debug\netcoreapp3.1\BattagliaPokemon.csproj.AssemblyReference.cache
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\obj\Debug\netcoreapp3.1\BattagliaPokemon.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\obj\Debug\netcoreapp3.1\BattagliaPokemon.AssemblyInfoInputs.cache
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\obj\Debug\netcoreapp3.1\BattagliaPokemon.AssemblyInfo.cs
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\obj\Debug\netcoreapp3.1\BattagliaPokemon.csproj.CoreCompileInputs.cache
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\obj\Debug\netcoreapp3.1\BattagliaPokemon.csproj.CopyComplete
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\obj\Debug\netcoreapp3.1\BattagliaPokemon.dll
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\obj\Debug\netcoreapp3.1\BattagliaPokemon.pdb
+C:\Users\lucid\Desktop\GIT REPOSITORY\BattagliaPokemon\BattagliaPokemon\BattagliaPokemon\obj\Debug\netcoreapp3.1\BattagliaPokemon.genruntimeconfig.cache
