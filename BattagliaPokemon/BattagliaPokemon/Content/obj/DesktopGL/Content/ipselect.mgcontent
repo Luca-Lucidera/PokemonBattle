@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/ipselect.png</SourceFile>
-  <SourceTime>2021-12-22T10:50:33.4351658+01:00</SourceTime>
-  <DestFile>D:/Scuola/GITHUB/PokemonBattle/BattagliaPokemon/BattagliaPokemon/Content/bin/DesktopGL/Content/ipselect.xnb</DestFile>
-  <DestTime>2022-01-10T14:20:46.0373762+01:00</DestTime>
+  <SourceFile>C:/Users/lucid/Desktop/GIT REPOSITORY/BattagliaPokemon/BattagliaPokemon/BattagliaPokemon/Content/ipselect.png</SourceFile>
+  <SourceTime>2022-01-09T16:44:05.5705022+01:00</SourceTime>
+  <DestFile>C:/Users/lucid/Desktop/GIT REPOSITORY/BattagliaPokemon/BattagliaPokemon/BattagliaPokemon/Content/bin/DesktopGL/Content/ipselect.xnb</DestFile>
+  <DestTime>2022-01-11T10:10:23.0133489+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2020-08-10T18:17:54+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

@@ -578,17 +578,18 @@ namespace BattagliaPokemon
 
             secondPeer = listener.AcceptTcpClient();
 
-
+            /*
             Socket s = secondPeer.Client;
             try
             {
-                myPeer.Connect(((IPEndPoint)s.RemoteEndPoint).Address, 42069);
+                myPeer = new TcpClient(((IPEndPoint)s.RemoteEndPoint).Address.ToString(), 42069);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
-
+            */
+            myPeer = secondPeer;
 
             while (true)
             {
@@ -597,7 +598,6 @@ namespace BattagliaPokemon
                     sw = new StreamWriter(secondPeer.GetStream());
                     sr = new StreamReader(secondPeer.GetStream());
                     string strClientInput = sr.ReadLine();
-
                     if (strClientInput != null)
                     {
                         xmlDoc.LoadXml(strClientInput);
@@ -715,6 +715,14 @@ namespace BattagliaPokemon
                         {
                             sw.WriteLine(" ");
                         }
+                        else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "r")
+                        {
+                            sw.Write("<root>" +
+                           "<comando>p</comando>" +
+                           "</root>");
+                            sw.Flush();
+                            mioTurno = true;
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -749,7 +757,7 @@ namespace BattagliaPokemon
                     else if (mousePosition.X >= 423 && mousePosition.X <= 423 + 190 && mousePosition.Y >= 398 && mousePosition.Y <= 398 + 60)
                         mossaScelta = mioPokemon.mosse[3];
 
-
+                    
 
 
                     string mossaDaMandare = String.Format("<root>" +
@@ -761,6 +769,7 @@ namespace BattagliaPokemon
 
                     swFP = new StreamWriter(myPeer.GetStream());
                     srFP = new StreamReader(myPeer.GetStream());
+                    
                     swFP.WriteLine(mossaDaMandare);
                     swFP.Flush();
 
@@ -783,6 +792,7 @@ namespace BattagliaPokemon
                             swFP.Flush();
 
                         }
+
                         mioTurno = false;
 
                     }
@@ -799,6 +809,7 @@ namespace BattagliaPokemon
                             swFP.Flush();
 
                         }
+
                         mioTurno = false;
 
                     }
@@ -816,6 +827,7 @@ namespace BattagliaPokemon
 
                         }
                         mioTurno = false;
+
                     }
                     else if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText) == 3)
                     {
@@ -830,6 +842,7 @@ namespace BattagliaPokemon
                             swFP.Flush();
 
                         }
+
                         mioTurno = false;
                     }
                     else if (Convert.ToInt32(xmlDoc.GetElementsByTagName("moltiplicatore")[0].InnerText) == 4)
@@ -845,10 +858,18 @@ namespace BattagliaPokemon
                             swFP.Flush();
 
                         }
+
                         mioTurno = false;
                     }
+                     
 
+                    swFP.Write("<root>" +
+                    "<comando>p</comando>" +
+                    "</root>\r\n");
+                    swFP.Flush();
+                    mioTurno = false;
 
+                   
                 }
             }
             else if (battleLogic.Equals("Zaino"))
@@ -883,7 +904,7 @@ namespace BattagliaPokemon
                         battleLogic = "";
                         /*DA QUI INSERIRE LA CONNESSIONE TCP DOVE INVIARE LE INFORMAZIONI AL SECONDO PEER*/
 
-                        string pokemonDaMandare = String.Format("<root>" +
+                    string pokemonDaMandare = String.Format("<root>" +
                                         "<comando>c</comando>" +
                                         "<pokemon>" +
                                             "<nome>{0}</nome>" +
@@ -894,6 +915,7 @@ namespace BattagliaPokemon
 
                         swFP.WriteLine(pokemonDaMandare);
                         swFP.Flush();
+
                         mioTurno = false;
                     }
                 }
@@ -904,7 +926,7 @@ namespace BattagliaPokemon
                 srFP = new StreamReader(myPeer.GetStream());
                 swFP.WriteLine("<root>" +
                     "<comando>f<comando>" +
-                    "</root>");
+                    "</root>\r\n");
                 swFP.Flush();
                 base.Exit();
             }
