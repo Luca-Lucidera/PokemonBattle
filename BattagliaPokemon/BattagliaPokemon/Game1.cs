@@ -43,7 +43,7 @@ namespace BattagliaPokemon
         private string ipAvversario = "";
         private string messaggioTurno = "";
 
-        private bool mioTurno = false;
+        private bool mioTurno;
         private bool done1 = false;
         private bool done2 = false;
         private int posAnimazioneAvversario = 800;
@@ -58,9 +58,11 @@ namespace BattagliaPokemon
         //connessione
         private TcpClient myPeer;
         private TcpClient secondPeer;
-        private StreamReader srFP;
-        private StreamWriter swFP;
-        private Thread receivingThread;
+        private StreamReader sr;
+        private StreamWriter sw;
+        TcpListener listener = new TcpListener(IPAddress.Any, 42069);
+
+        //private Thread receivingThread;
 
 
         public Game1()
@@ -74,11 +76,14 @@ namespace BattagliaPokemon
         {
             // TODO: Add your initialization logic here
 
-            ThreadStart start = new ThreadStart(riceviDati);
-            receivingThread = new Thread(start);
+            //ThreadStart start = new ThreadStart(riceviDati);
+            //receivingThread = new Thread(start);
+
+            /*
             receivingThread.IsBackground = true;
             receivingThread.SetApartmentState(ApartmentState.STA);
             receivingThread.Start();
+            */
 
             base.Initialize();
         }
@@ -97,7 +102,7 @@ namespace BattagliaPokemon
             mieiPokemon = new PokemonScelti();
             xmlDoc = new XmlDocument();
             myPeer = new TcpClient();
-
+            listener.Start();
             /*
              * per inserire delle texture nella classe all pokeon devo per forza passargli l'oggetto Game1 (this)
              * _graphics serve per andare a vedere la grandezza dello schermo, e quindi calcolare dove posizionare i pokemon
@@ -154,15 +159,13 @@ namespace BattagliaPokemon
             else if (gameLogic.Equals("ipSelection")) //schermata della selezione ip
             {
                 if (mouseState.LeftButton == ButtonState.Pressed) //controllo se è stato premuto il tato sinistro
+                {
                     if (!ipAvversario.Equals("")) //controllo che l'ip non sia vuoto
                     {
-                        //da eliminare
+                        myPeer = new TcpClient(ipAvversario, 42069);
+                        sw = new StreamWriter(myPeer.GetStream());
+                        sr = new StreamReader(myPeer.GetStream());
                         mioPokemon = mieiPokemon.getPokemonByPos(0);
-
-                        //myPeer = new TcpClient(); //creo l'oggetto myPeer che rappresenta il mio client
-                        myPeer.Connect(ipAvversario, 42069); //provo a connettermi tramite il metodo connect, dandogli come input l'ip del secondo peer e la porta di ascolto
-                        swFP = new StreamWriter(myPeer.GetStream());
-                        srFP = new StreamReader(myPeer.GetStream());
 
                         string mioNomeDaMandare = String.Format("<root>" +
                             "<comando>m</comando>" +
@@ -172,13 +175,13 @@ namespace BattagliaPokemon
 
 
                         //invio il mio nome con il relativo codice al secondo peer
-                        swFP.WriteLine(mioNomeDaMandare);
-                        swFP.Flush(); //svuoto il buffer
+                        sw.WriteLine(mioNomeDaMandare);
+                        sw.Flush(); //svuoto il buffer
 
                         //TODO: ogni stringa di invio e ricezione deve essere trasformata in XML e quindi in classe
                         //da qui io aspetto la risposta del secondo peer, io mi aspetto di ricevere il suo pokemon scelto per primo.
-                        nomeAvversario = srFP.ReadLine();
-                        strPokemonSceltoAvversario = srFP.ReadLine();
+                        nomeAvversario = sr.ReadLine();
+                        strPokemonSceltoAvversario = sr.ReadLine();
 
 
                         xmlDoc.LoadXml(strPokemonSceltoAvversario);
@@ -186,16 +189,27 @@ namespace BattagliaPokemon
                         pokemonAvversario = new Pokemon(nodoPokemon.ChildNodes[0].InnerText, nodoPokemon.ChildNodes[2].InnerText, Convert.ToInt32(nodoPokemon.ChildNodes[1].InnerText), this);
 
 
-                        //dopo aver ricevuto i pokemon dal secondo peer io gli invio il mio primo pokemon
+                        sw.WriteLine(mieiPokemon.getPokemonByPos(0).ToXML());
+                        sw.Flush();
 
-                        swFP.WriteLine(mieiPokemon.getPokemonByPos(0).ToXML());
-                        swFP.Flush();
-
-                        gameLogic = "battle";
                         mioTurno = true;
+                        gameLogic = "battle";
                         Thread.Sleep(100);
                     }
-
+                }
+                else
+                {
+                    if (listener.Pending())
+                    {
+                        myPeer = listener.AcceptTcpClient();
+                        sw = new StreamWriter(myPeer.GetStream());
+                        sr = new StreamReader(myPeer.GetStream());
+                        gameLogic = "battle";
+                        mioTurno = false;
+                        aspettaTurno();
+                        mioTurno = false;
+                    }
+                }
             }
             else if (gameLogic.Equals("battle"))
             {
@@ -225,11 +239,145 @@ namespace BattagliaPokemon
                         Thread.Sleep(33);
                         if (mioTurno)
                             eseguiTurno();
+                        else
+                            aspettaTurno();
                     }
+
                 }
             }
             base.Update(gameTime);
         }
+
+        private void aspettaTurno()
+        {
+            while (!mioTurno)
+            {
+                string strXML = sr.ReadLine();
+                xmlDoc.LoadXml(strXML);
+                if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "m")
+                {
+                    sw.WriteLine(String.Format("<root>" +
+                    "<comando>m</comando>" +
+                    "<nome>{0}</nome>" +
+                    "</root>", nome));
+                    sw.Flush();
+                    sw.WriteLine(mieiPokemon.getPokemonByPos(0).ToXML());
+                    sw.Flush();
+                    mioPokemon = mieiPokemon.getPokemonByPos(0);
+                }
+                else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "s")
+                {
+                    nodoPokemon = xmlDoc.DocumentElement.ChildNodes[1];
+                    pokemonAvversario = new Pokemon(nodoPokemon.ChildNodes[0].InnerText, nodoPokemon.ChildNodes[2].InnerText, Convert.ToInt32(nodoPokemon.ChildNodes[1].InnerText), this);
+                    gameLogic = "battle";
+                    mioTurno = true;
+                }
+                else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "a")
+                {
+                    string mossaDaMandare = "";
+                    if ((mioPokemon.tipo == "Fuoco" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Terra" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Roccia" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Acqua")) ||
+                       (mioPokemon.tipo == "Acqua" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Erba" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Elettro")) ||
+                       (mioPokemon.tipo == "Erba" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Volante" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Veleno" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Coleottero" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Fuoco" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Ghiaccio")) ||
+                       (mioPokemon.tipo == "Elettro" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Terra")) ||
+                       (mioPokemon.tipo == "Terra" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Acqua" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Erba" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Ghiaccio")) ||
+                       (mioPokemon.tipo == "Volante" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Elettro" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Roccia" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Ghiaccio")) ||
+                       (mioPokemon.tipo == "Veleno" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Terra" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Pisco")) ||
+                       (mioPokemon.tipo == "Normale" && (xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Lotta" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Psico" || xmlDoc.GetElementsByTagName("tipoMossa")[0].InnerText == "Folletto")))
+                    {
+                        mioPokemon.vita = mioPokemon.vita - (Convert.ToInt32(xmlDoc.GetElementsByTagName("danni")[0].InnerText) * 2);
+                        if (mioPokemon.vita <= 0)
+                        {
+                            battleLogic = "Cambia";
+                            mossaDaMandare = String.Format("<root>" +
+                        "<comando>r</comando>" +
+                        "<vitaRimanente>{0}</vitaRimanente>" +
+                        "<moltiplicatore>{1}</moltiplicatore>" +
+                        "</root>", mioPokemon.vita, 2);
+                        }
+                        else
+                        {
+                            mossaDaMandare = String.Format("<root>" +
+                        "<comando>r</comando>" +
+                        "<vitaRimanente>{0}</vitaRimanente>" +
+                        "<moltiplicatore>{1}</moltiplicatore>" +
+                        "</root>", mioPokemon.vita, 2);
+                        }
+
+                    }
+                    else
+                    {
+                        mioPokemon.vita = mioPokemon.vita - Convert.ToInt32(xmlDoc.GetElementsByTagName("danni")[0].InnerText);
+                        if (mioPokemon.vita <= 0)
+                        {
+                            battleLogic = "Cambia";
+                            mossaDaMandare = String.Format("<root>" +
+                        "<comando>r</comando>" +
+                        "<vitaRimanente>{0}</vitaRimanente>" +
+                        "<moltiplicatore>{1}</moltiplicatore>" +
+                        "</root>", mioPokemon.vita, 2);
+                        }
+                        else
+                        {
+                            mossaDaMandare = String.Format("<root>" +
+                        "<comando>r</comando>" +
+                        "<vitaRimanente>{0}</vitaRimanente>" +
+                        "<moltiplicatore>{1}</moltiplicatore>" +
+                        "</root>", mioPokemon.vita, 2);
+
+                        }
+
+
+
+                    }
+                    sw.WriteLine(mossaDaMandare);
+                    sw.Flush();
+                }
+                else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "i")
+                {
+                    string oggetto = sr.ReadLine();
+                    xmlDoc.LoadXml(oggetto);
+                    pokemonAvversario.vita = Convert.ToInt32(xmlDoc.GetElementsByTagName("vitaAttuale")[0].InnerText);
+                }
+                else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "f")
+                {
+                    Exit();
+                }
+                else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "c")
+                {
+                    pokemonAvversario = allPokemon.getPokemonByName(xmlDoc.GetElementsByTagName("nome")[0].InnerText);
+                    pokemonAvversario.vita = Convert.ToInt32(xmlDoc.GetElementsByTagName("vita")[0].InnerText);
+
+                }
+                else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "l")
+                {
+                    c++;
+                    battleLogic = "Cambia";
+
+                    if (mieiPokemon.getNumeroPokemonScelti() == c)
+                    {
+                        Exit();
+                    }
+
+                }
+                else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "e")
+                {
+                    sw.WriteLine(" ");
+                }
+                else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "r")
+                {
+                    sw.Write("<root>" +
+                   "<comando>p</comando>" +
+                   "</root>");
+                    sw.Flush();
+
+                }
+                else if (xmlDoc.GetElementsByTagName("comando")[0].InnerText == "p")
+                {
+                    mioTurno = true;
+                }
+            }
+        }
+
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -569,6 +717,9 @@ namespace BattagliaPokemon
             _spriteBatch.End();
             base.Draw(gameTime);
         }
+
+        //funzione ricevi dati
+        /*
         private void riceviDati()
         {
             TcpListener listener = new TcpListener(IPAddress.Any, 42069);
@@ -578,7 +729,7 @@ namespace BattagliaPokemon
 
             secondPeer = listener.AcceptTcpClient();
 
-            /*
+            
             Socket s = secondPeer.Client;
             try
             {
@@ -588,7 +739,7 @@ namespace BattagliaPokemon
             {
                 Console.WriteLine(ex);
             }
-            */
+            
             myPeer = secondPeer;
 
             while (true)
@@ -735,6 +886,8 @@ namespace BattagliaPokemon
             sr.Close();
 
         } //Cosa esegue il secondo peer
+*/
+
         private void eseguiTurno() //se è il turno del peer, viene eseguito
         {
             var mouseState = Mouse.GetState(); //vado a prendere lo stato del mouse
@@ -757,8 +910,6 @@ namespace BattagliaPokemon
                     else if (mousePosition.X >= 423 && mousePosition.X <= 423 + 190 && mousePosition.Y >= 398 && mousePosition.Y <= 398 + 60)
                         mossaScelta = mioPokemon.mosse[3];
 
-                    
-
 
                     string mossaDaMandare = String.Format("<root>" +
                     "<comando>a</comando>" +
@@ -767,13 +918,13 @@ namespace BattagliaPokemon
                     "<danni>{2}</danni>" +
                     "</root>", mossaScelta.nome, mossaScelta.tipo, mossaScelta.danni);
 
-                    swFP = new StreamWriter(myPeer.GetStream());
-                    srFP = new StreamReader(myPeer.GetStream());
-                    
-                    swFP.WriteLine(mossaDaMandare);
-                    swFP.Flush();
+                    sw = new StreamWriter(myPeer.GetStream());
+                    sr = new StreamReader(myPeer.GetStream());
 
-                    strPokemonSceltoAvversario = srFP.ReadLine();
+                    sw.WriteLine(mossaDaMandare);
+                    sw.Flush();
+
+                    strPokemonSceltoAvversario = sr.ReadLine();
 
                     xmlDoc.LoadXml(strPokemonSceltoAvversario);
 
@@ -788,8 +939,8 @@ namespace BattagliaPokemon
                        "<comando>l</comando>" +
                        "<pokemon>{0}</pokemon>" +
                        "</root>", pokemonAvversario.nome);
-                            swFP.WriteLine(sconfittoDaMandare);
-                            swFP.Flush();
+                            sw.WriteLine(sconfittoDaMandare);
+                            sw.Flush();
 
                         }
 
@@ -805,8 +956,8 @@ namespace BattagliaPokemon
                        "<comando>l</comando>" +
                        "<pokemon>{0}</pokemon>" +
                        "</root>", pokemonAvversario.nome);
-                            swFP.WriteLine(sconfittoDaMandare);
-                            swFP.Flush();
+                            sw.WriteLine(sconfittoDaMandare);
+                            sw.Flush();
 
                         }
 
@@ -822,8 +973,8 @@ namespace BattagliaPokemon
                        "<comando>l</comando>" +
                        "<pokemon>{0}</pokemon>" +
                        "</root>", pokemonAvversario.nome);
-                            swFP.WriteLine(sconfittoDaMandare);
-                            swFP.Flush();
+                            sw.WriteLine(sconfittoDaMandare);
+                            sw.Flush();
 
                         }
                         mioTurno = false;
@@ -838,8 +989,8 @@ namespace BattagliaPokemon
                        "<comando>l</comando>" +
                        "<pokemon>{0}</pokemon>" +
                        "</root>", pokemonAvversario.nome);
-                            swFP.WriteLine(sconfittoDaMandare);
-                            swFP.Flush();
+                            sw.WriteLine(sconfittoDaMandare);
+                            sw.Flush();
 
                         }
 
@@ -854,28 +1005,28 @@ namespace BattagliaPokemon
                        "<comando>l</comando>" +
                        "<pokemon>{0}</pokemon>" +
                        "</root>", pokemonAvversario.nome);
-                            swFP.WriteLine(sconfittoDaMandare);
-                            swFP.Flush();
+                            sw.WriteLine(sconfittoDaMandare);
+                            sw.Flush();
 
                         }
 
                         mioTurno = false;
                     }
-                     
 
-                    swFP.Write("<root>" +
+
+                    sw.Write("<root>" +
                     "<comando>p</comando>" +
-                    "</root>\r\n");
-                    swFP.Flush();
+                    "</root>");
+                    sw.Flush();
                     mioTurno = false;
 
-                   
+
                 }
             }
             else if (battleLogic.Equals("Zaino"))
             {
-                swFP = new StreamWriter(myPeer.GetStream());
-                srFP = new StreamReader(myPeer.GetStream());
+                sw = new StreamWriter(myPeer.GetStream());
+                sr = new StreamReader(myPeer.GetStream());
 
 
                 string oggetto = "pozione";
@@ -886,14 +1037,14 @@ namespace BattagliaPokemon
                     "<vitaAttuale>{2}</vitaAttuale>" +
                     "</root>", oggetto, mioPokemon.nome, mioPokemon.vita);
 
-                swFP.WriteLine(oggettoDaMandare);
-                swFP.Flush();
+                sw.WriteLine(oggettoDaMandare);
+                sw.Flush();
 
             }
             else if (battleLogic.Equals("Cambia"))
             {
-                swFP = new StreamWriter(myPeer.GetStream());
-                srFP = new StreamReader(myPeer.GetStream());
+                sw = new StreamWriter(myPeer.GetStream());
+                sr = new StreamReader(myPeer.GetStream());
 
                 if (mouseState.LeftButton == ButtonState.Pressed)
                 {
@@ -902,19 +1053,19 @@ namespace BattagliaPokemon
                     {
                         mioPokemon = pokemonSelezionato;
                         battleLogic = "";
-                        /*DA QUI INSERIRE LA CONNESSIONE TCP DOVE INVIARE LE INFORMAZIONI AL SECONDO PEER*/
+                        //DA QUI INSERIRE LA CONNESSIONE TCP DOVE INVIARE LE INFORMAZIONI AL SECONDO PEER
 
-                    string pokemonDaMandare = String.Format("<root>" +
-                                        "<comando>c</comando>" +
-                                        "<pokemon>" +
-                                            "<nome>{0}</nome>" +
-                                            "<vita>{1}</vita>" +
-                                            "<tipo>{2}</tipo>" +
-                                            "</pokemon>" +
-                                      "</root>", mioPokemon.nome, mioPokemon.vita, mioPokemon.tipo);
+                        string pokemonDaMandare = String.Format("<root>" +
+                                            "<comando>c</comando>" +
+                                            "<pokemon>" +
+                                                "<nome>{0}</nome>" +
+                                                "<vita>{1}</vita>" +
+                                                "<tipo>{2}</tipo>" +
+                                                "</pokemon>" +
+                                          "</root>", mioPokemon.nome, mioPokemon.vita, mioPokemon.tipo);
 
-                        swFP.WriteLine(pokemonDaMandare);
-                        swFP.Flush();
+                        sw.WriteLine(pokemonDaMandare);
+                        sw.Flush();
 
                         mioTurno = false;
                     }
@@ -922,15 +1073,16 @@ namespace BattagliaPokemon
             }
             else if (battleLogic.Equals("Fuga"))
             {
-                swFP = new StreamWriter(myPeer.GetStream());
-                srFP = new StreamReader(myPeer.GetStream());
-                swFP.WriteLine("<root>" +
+                sw = new StreamWriter(myPeer.GetStream());
+                sr = new StreamReader(myPeer.GetStream());
+                sw.WriteLine("<root>" +
                     "<comando>f<comando>" +
                     "</root>\r\n");
-                swFP.Flush();
+                sw.Flush();
                 base.Exit();
             }
         }
+
         private void audioEntrataPokemon()
         {
             audioFile = new AudioFileReader("POKEMON BATTLE START SOUND EFFECT.mp3");
